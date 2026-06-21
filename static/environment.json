@@ -1,0 +1,13 @@
+{
+  "image_name": "coderflow-ref-static",
+  "default_agent": "claude",
+  "description": "Reference environment — plain HTML/CSS/JS, no backend. Clones coderflow-reference-apps; serve the static/ folder per its README.",
+  "repos": [
+    {
+      "name": "coderflow-reference-apps",
+      "url": "https://github.com/ProfoundLogic/coderflow-reference-apps",
+      "branch": "main",
+      "allow_branch_selection": true
+    }
+  ]
+}

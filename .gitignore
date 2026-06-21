@@ -1,0 +1,17 @@
+# Dependencies
+node_modules/
+
+# Angular
+**/.angular/
+**/dist/
+
+# .NET
+**/bin/
+**/obj/
+
+# Single-origin SPA build output (generated into wwwroot at container start)
+dotnet-angular/Api/wwwroot/
+
+# Logs and local env
+*.log
+.env

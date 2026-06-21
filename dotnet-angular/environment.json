@@ -1,0 +1,13 @@
+{
+  "image_name": "coderflow-ref-dotnet-angular",
+  "default_agent": "claude",
+  "description": "Reference environment — .NET API + Angular front end (two-process). Clones coderflow-reference-apps; run the dotnet-angular app per its README.",
+  "repos": [
+    {
+      "name": "coderflow-reference-apps",
+      "url": "https://github.com/ProfoundLogic/coderflow-reference-apps",
+      "branch": "main",
+      "allow_branch_selection": true
+    }
+  ]
+}

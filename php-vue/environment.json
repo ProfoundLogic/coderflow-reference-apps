@@ -1,13 +1,43 @@
 {
   "image_name": "coderflow-ref-php-vue",
   "default_agent": "claude",
-  "description": "Reference environment — PHP API + Vue front end (two-process). Clones coderflow-reference-apps; run the php-vue app per its README.",
+  "description": "Reference environment — PHP API + Vue front end (two-process), preconfigured to import and launch. Clones coderflow-reference-apps and runs the php-vue app.",
+  "docker_config": {
+    "pre_clone_instructions": "RUN apt-get update && apt-get install -y php-cli && rm -rf /var/lib/apt/lists/*",
+    "post_clone_instructions": ""
+  },
   "repos": [
     {
       "name": "coderflow-reference-apps",
       "url": "https://github.com/ProfoundLogic/coderflow-reference-apps",
       "branch": "main",
-      "allow_branch_selection": true
+      "allow_branch_selection": true,
+      "clone_auto": true,
+      "post_clone_action": "cd /workspace/coderflow-reference-apps/php-vue/web && npm install"
     }
-  ]
+  ],
+  "application_server": {
+    "enabled": true,
+    "name": "PHP + Vue",
+    "ports": [
+      {
+        "internal": 5173,
+        "name": "web"
+      },
+      {
+        "internal": 3001,
+        "name": "api"
+      }
+    ],
+    "launch_urls": [
+      {
+        "name": "Web",
+        "path": "/",
+        "port": 5173,
+        "primary": true,
+        "description": "PHP + Vue front end"
+      }
+    ],
+    "start_command": "cd /workspace/coderflow-reference-apps/php-vue/api && php -S 0.0.0.0:3001 router.php &\ncd /workspace/coderflow-reference-apps/php-vue/web && npm run dev"
+  }
 }

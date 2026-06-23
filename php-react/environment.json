@@ -1,13 +1,43 @@
 {
   "image_name": "coderflow-ref-php-react",
   "default_agent": "claude",
-  "description": "Reference environment — PHP API + React front end (two-process). Clones coderflow-reference-apps; run the php-react app per its README.",
+  "description": "Reference environment — PHP API + React front end (two-process), preconfigured to import and launch. Clones coderflow-reference-apps and runs the php-react app.",
+  "docker_config": {
+    "pre_clone_instructions": "RUN apt-get update && apt-get install -y php-cli && rm -rf /var/lib/apt/lists/*",
+    "post_clone_instructions": ""
+  },
   "repos": [
     {
       "name": "coderflow-reference-apps",
       "url": "https://github.com/ProfoundLogic/coderflow-reference-apps",
       "branch": "main",
-      "allow_branch_selection": true
+      "allow_branch_selection": true,
+      "clone_auto": true,
+      "post_clone_action": "cd /workspace/coderflow-reference-apps/php-react/web && npm install"
     }
-  ]
+  ],
+  "application_server": {
+    "enabled": true,
+    "name": "PHP + React",
+    "ports": [
+      {
+        "internal": 5173,
+        "name": "web"
+      },
+      {
+        "internal": 3001,
+        "name": "api"
+      }
+    ],
+    "launch_urls": [
+      {
+        "name": "Web",
+        "path": "/",
+        "port": 5173,
+        "primary": true,
+        "description": "PHP + React front end"
+      }
+    ],
+    "start_command": "cd /workspace/coderflow-reference-apps/php-react/api && php -S 0.0.0.0:3001 router.php &\ncd /workspace/coderflow-reference-apps/php-react/web && npm run dev"
+  }
 }

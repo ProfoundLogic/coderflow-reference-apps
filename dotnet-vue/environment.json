@@ -1,13 +1,43 @@
 {
   "image_name": "coderflow-ref-dotnet-vue",
   "default_agent": "claude",
-  "description": "Reference environment — .NET API + Vue front end (two-process). Clones coderflow-reference-apps; run the dotnet-vue app per its README.",
+  "description": "Reference environment — .NET API + Vue front end (two-process), preconfigured to import and launch. Clones coderflow-reference-apps and runs the dotnet-vue app.",
+  "docker_config": {
+    "pre_clone_instructions": "RUN curl -fsSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh && bash /tmp/dotnet-install.sh --channel 8.0 --install-dir /usr/local/dotnet && ln -sf /usr/local/dotnet/dotnet /usr/local/bin/dotnet && rm /tmp/dotnet-install.sh\nENV DOTNET_ROOT=/usr/local/dotnet",
+    "post_clone_instructions": ""
+  },
   "repos": [
     {
       "name": "coderflow-reference-apps",
       "url": "https://github.com/ProfoundLogic/coderflow-reference-apps",
       "branch": "main",
-      "allow_branch_selection": true
+      "allow_branch_selection": true,
+      "clone_auto": true,
+      "post_clone_action": "cd /workspace/coderflow-reference-apps/dotnet-vue/api && dotnet restore\ncd /workspace/coderflow-reference-apps/dotnet-vue/web && npm install"
     }
-  ]
+  ],
+  "application_server": {
+    "enabled": true,
+    "name": ".NET + Vue",
+    "ports": [
+      {
+        "internal": 5173,
+        "name": "web"
+      },
+      {
+        "internal": 3001,
+        "name": "api"
+      }
+    ],
+    "launch_urls": [
+      {
+        "name": "Web",
+        "path": "/",
+        "port": 5173,
+        "primary": true,
+        "description": ".NET + Vue front end"
+      }
+    ],
+    "start_command": "cd /workspace/coderflow-reference-apps/dotnet-vue/api && dotnet run &\ncd /workspace/coderflow-reference-apps/dotnet-vue/web && npm run dev"
+  }
 }

@@ -11,10 +11,22 @@ rebuild.
   `{"message":"Hello from the PHP API!"}`; every other path renders the page.
 - `index.php` — the server-rendered HTML page. It fetches `/api/hello` from the
   **same origin** it was served from, so there's no proxy and no CORS to set up.
-- `environment.json` — an importable CoderFlow environment (a starter — complete
-  the app-server config in CoderFlow, or replace it via Export).
+- `environment.json` — an importable CoderFlow environment, **preconfigured to
+  launch**: the pre-clone PHP install and the single application server (port
+  8000) are already set.
 
-## Run it (one process)
+## In CoderFlow (import and launch)
+
+This environment is preconfigured — there's nothing to wire up by hand. **Import
+Environment → Git repository**, paste this repo's URL, **Load environments**,
+pick `php-html`, **Import**, then build and launch. The pre-clone script installs
+PHP (the base image doesn't include it) and the application server runs
+`php -S 0.0.0.0:8000 router.php` on port 8000.
+
+Open the launch URL — the page shows "Hello from the PHP API!", fetched
+same-origin from the one process that served it.
+
+## Run it locally (one process)
 
 Runtime to install: **PHP 8**. No front-end toolchain, no build step.
 
@@ -33,10 +45,3 @@ you get live reload at the cost of a second process and a proxy. Here one proces
 serves everything on one port: simpler, and closer to how a single-host app
 deploys. There's no hot reload — you refresh to see changes — but with
 server-rendered PHP there's nothing to rebuild first.
-
-## In CoderFlow
-
-Import this environment (**Import Environment → Git repository**, then pick
-`php-html`), or create one that clones this repo. Install PHP as the pre-clone
-step (the base image doesn't include it), and set the single start command above
-as the application server on port 8000.

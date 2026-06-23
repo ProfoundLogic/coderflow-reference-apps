@@ -1,13 +1,34 @@
 {
   "image_name": "coderflow-ref-static",
   "default_agent": "claude",
-  "description": "Reference environment — plain HTML/CSS/JS, no backend. Clones coderflow-reference-apps; serve the static/ folder per its README.",
+  "description": "Reference environment — plain HTML/CSS/JS, no backend, preconfigured to import and launch. Clones coderflow-reference-apps and serves the static/ folder on port 8000.",
   "repos": [
     {
       "name": "coderflow-reference-apps",
       "url": "https://github.com/ProfoundLogic/coderflow-reference-apps",
       "branch": "main",
-      "allow_branch_selection": true
+      "allow_branch_selection": true,
+      "clone_auto": true
     }
-  ]
+  ],
+  "application_server": {
+    "enabled": true,
+    "name": "Static",
+    "ports": [
+      {
+        "internal": 8000,
+        "name": "web"
+      }
+    ],
+    "launch_urls": [
+      {
+        "name": "Web",
+        "path": "/",
+        "port": 8000,
+        "primary": true,
+        "description": "Static site"
+      }
+    ],
+    "start_command": "cd /workspace/coderflow-reference-apps/static && python3 -m http.server 8000 --bind 0.0.0.0"
+  }
 }

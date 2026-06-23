@@ -1,13 +1,39 @@
 {
   "image_name": "coderflow-ref-python-react",
   "default_agent": "claude",
-  "description": "Reference environment — Python API + React front end (two-process). Clones coderflow-reference-apps; run the python-react app per its README.",
+  "description": "Reference environment — Python API + React front end (two-process), preconfigured to import and launch. Clones coderflow-reference-apps and runs the python-react app.",
   "repos": [
     {
       "name": "coderflow-reference-apps",
       "url": "https://github.com/ProfoundLogic/coderflow-reference-apps",
       "branch": "main",
-      "allow_branch_selection": true
+      "allow_branch_selection": true,
+      "clone_auto": true,
+      "post_clone_action": "cd /workspace/coderflow-reference-apps/python-react/api && pip install -r requirements.txt\ncd /workspace/coderflow-reference-apps/python-react/web && npm install"
     }
-  ]
+  ],
+  "application_server": {
+    "enabled": true,
+    "name": "Python + React",
+    "ports": [
+      {
+        "internal": 5173,
+        "name": "web"
+      },
+      {
+        "internal": 3001,
+        "name": "api"
+      }
+    ],
+    "launch_urls": [
+      {
+        "name": "Web",
+        "path": "/",
+        "port": 5173,
+        "primary": true,
+        "description": "Python + React front end"
+      }
+    ],
+    "start_command": "cd /workspace/coderflow-reference-apps/python-react/api && uvicorn main:app --host 0.0.0.0 --port 3001 &\ncd /workspace/coderflow-reference-apps/python-react/web && npm run dev"
+  }
 }

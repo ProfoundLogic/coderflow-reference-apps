@@ -12,7 +12,7 @@ Every combo follows the same shape, so only the per-stack values differ:
 <backend>-<frontend>/
   api/               # backend, serves GET /api/hello on 0.0.0.0:3001
   web/               # front-end dev server, proxies /api -> :3001
-  environment.json   # an importable CoderFlow environment (starter)
+  environment.json   # an importable CoderFlow environment (preconfigured to launch)
   README.md          # how to run this combo
 ```
 
@@ -39,20 +39,15 @@ Two standalone examples sit alongside the grid:
 
 ## Use it in CoderFlow
 
-**Import the ready-made environment** (easiest): in CoderFlow, **Import
-Environment → Git repository**, paste this repo's URL, **Load environments**,
-pick a combo (e.g. `node-react`), **Import**. Each combo ships an
-`environment.json` that clones this repo; finish the runtime/app-server config in
-the Web UI (or replace it via Export once you have a working one).
+**Import and launch** (easiest): in CoderFlow, **Import Environment → Git
+repository**, paste this repo's URL, **Load environments**, pick a combo (e.g.
+`node-react`), **Import**, then build and launch. Each combo's `environment.json`
+is **preconfigured** — it clones this repo, installs the runtime (pre-clone) and
+dependencies (post-clone), and runs the application server(s). Nothing to wire up
+by hand.
 
-**Or wire it by hand:** create an environment that clones this repo, then set the
-runtime, dependency install, and the two application servers per the combo's
-`README.md`.
-
-> The `environment.json` files are **starters** — they import cleanly and clone
-> the repo, but the build/runtime/app-server details are best completed in the UI
-> or captured by **Export** from a working environment, which keeps them
-> schema-valid and credential-free.
+**Customize from there:** adjust ports, start commands, or add connections in the
+Web UI, and capture a working environment back out with **Export**.
 
 ## Run it locally
 

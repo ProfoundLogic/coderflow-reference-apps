@@ -7,15 +7,24 @@ Minimal hello-world: a **PHP** API serving `GET /api/hello`, and a
 
 - `api/` — PHP backend. Serves `GET /api/hello` → `{"message":"Hello from the PHP API!"}` on `0.0.0.0:3001`.
 - `web/` — Angular front end. Dev server proxies `/api` → `http://localhost:3001`.
-- `environment.json` — an importable CoderFlow environment (a starter — complete the runtime/app-server config in CoderFlow, or replace it via Export).
+- `environment.json` — an importable CoderFlow environment, **preconfigured to launch**: the pre-clone runtime install, post-clone dependency install, and both application servers are already set.
 
-## Run it (two processes)
+## In CoderFlow (import and launch)
 
-Runtime to install: **PHP 8.2** and **Node.js** (for the front end).
+This environment is preconfigured — there's nothing to wire up by hand:
+
+1. **Import Environment → Git repository**, paste this repo's URL, **Load environments**, pick `php-angular`, **Import**.
+2. Build and launch it. The pre-clone script installs **PHP 8.2**, the post-clone action installs dependencies, and the application server starts the API (port 3001) and the Angular dev server (port 4200).
+
+Open the launch URL — it shows "Hello from the PHP API!", fetched through the dev-server proxy.
+
+## Run it locally (two processes)
+
+To run outside CoderFlow, install **PHP 8.2** and **Node.js** (for the front end), then:
 
 ```sh
 # 1. install dependencies
-# no build step
+# (the PHP backend runs from source — nothing to install)
 cd web && npm install
 
 # 2. start the API (terminal 1)
@@ -27,10 +36,3 @@ cd web && npm start
 
 Open the front end at `http://localhost:4200`. It shows
 "Hello from the PHP API!", fetched through the dev-server proxy.
-
-## In CoderFlow
-
-Import this environment (**Import Environment → Git repository**, then pick
-`php-angular`), or create one that clones this repo. Set the runtime above as the
-pre-clone step, the install lines as the post-clone action, and the two start
-commands as application servers (the API on port 3001).

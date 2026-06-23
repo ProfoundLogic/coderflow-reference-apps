@@ -1,13 +1,39 @@
 {
   "image_name": "coderflow-ref-node-react",
   "default_agent": "claude",
-  "description": "Reference environment — Node.js API + React front end (two-process). Clones coderflow-reference-apps; run the node-react app per its README.",
+  "description": "Reference environment — Node.js API + React front end (two-process), preconfigured to import and launch. Clones coderflow-reference-apps and runs the node-react app.",
   "repos": [
     {
       "name": "coderflow-reference-apps",
       "url": "https://github.com/ProfoundLogic/coderflow-reference-apps",
       "branch": "main",
-      "allow_branch_selection": true
+      "allow_branch_selection": true,
+      "clone_auto": true,
+      "post_clone_action": "cd /workspace/coderflow-reference-apps/node-react/api && npm install\ncd /workspace/coderflow-reference-apps/node-react/web && npm install"
     }
-  ]
+  ],
+  "application_server": {
+    "enabled": true,
+    "name": "Node.js + React",
+    "ports": [
+      {
+        "internal": 5173,
+        "name": "web"
+      },
+      {
+        "internal": 3001,
+        "name": "api"
+      }
+    ],
+    "launch_urls": [
+      {
+        "name": "Web",
+        "path": "/",
+        "port": 5173,
+        "primary": true,
+        "description": "Node.js + React front end"
+      }
+    ],
+    "start_command": "cd /workspace/coderflow-reference-apps/node-react/api && npm start &\ncd /workspace/coderflow-reference-apps/node-react/web && npm run dev"
+  }
 }

@@ -1,13 +1,43 @@
 {
   "image_name": "coderflow-ref-java-react",
   "default_agent": "claude",
-  "description": "Reference environment — Java API + React front end (two-process). Clones coderflow-reference-apps; run the java-react app per its README.",
+  "description": "Reference environment — Java API + React front end (two-process), preconfigured to import and launch. Clones coderflow-reference-apps and runs the java-react app.",
+  "docker_config": {
+    "pre_clone_instructions": "RUN apt-get update && apt-get install -y default-jdk maven && rm -rf /var/lib/apt/lists/*",
+    "post_clone_instructions": ""
+  },
   "repos": [
     {
       "name": "coderflow-reference-apps",
       "url": "https://github.com/ProfoundLogic/coderflow-reference-apps",
       "branch": "main",
-      "allow_branch_selection": true
+      "allow_branch_selection": true,
+      "clone_auto": true,
+      "post_clone_action": "cd /workspace/coderflow-reference-apps/java-react/api && mvn -q -DskipTests package\ncd /workspace/coderflow-reference-apps/java-react/web && npm install"
     }
-  ]
+  ],
+  "application_server": {
+    "enabled": true,
+    "name": "Java + React",
+    "ports": [
+      {
+        "internal": 5173,
+        "name": "web"
+      },
+      {
+        "internal": 3001,
+        "name": "api"
+      }
+    ],
+    "launch_urls": [
+      {
+        "name": "Web",
+        "path": "/",
+        "port": 5173,
+        "primary": true,
+        "description": "Java + React front end"
+      }
+    ],
+    "start_command": "cd /workspace/coderflow-reference-apps/java-react/api && mvn -q spring-boot:run &\ncd /workspace/coderflow-reference-apps/java-react/web && npm run dev"
+  }
 }

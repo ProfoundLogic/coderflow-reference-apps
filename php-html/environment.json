@@ -1,13 +1,38 @@
 {
   "image_name": "coderflow-ref-php-html",
   "default_agent": "claude",
-  "description": "Reference environment — single-origin PHP (server-rendered, one port, no build, no proxy). Clones coderflow-reference-apps; run the php-html app per its README.",
+  "description": "Reference environment — single-origin PHP (server-rendered, one port, no build, no proxy), preconfigured to import and launch. Clones coderflow-reference-apps and runs the php-html app on port 8000.",
+  "docker_config": {
+    "pre_clone_instructions": "RUN apt-get update && apt-get install -y php-cli && rm -rf /var/lib/apt/lists/*",
+    "post_clone_instructions": ""
+  },
   "repos": [
     {
       "name": "coderflow-reference-apps",
       "url": "https://github.com/ProfoundLogic/coderflow-reference-apps",
       "branch": "main",
-      "allow_branch_selection": true
+      "allow_branch_selection": true,
+      "clone_auto": true
     }
-  ]
+  ],
+  "application_server": {
+    "enabled": true,
+    "name": "PHP",
+    "ports": [
+      {
+        "internal": 8000,
+        "name": "web"
+      }
+    ],
+    "launch_urls": [
+      {
+        "name": "Web",
+        "path": "/",
+        "port": 8000,
+        "primary": true,
+        "description": "PHP single-origin app"
+      }
+    ],
+    "start_command": "cd /workspace/coderflow-reference-apps/php-html && php -S 0.0.0.0:8000 router.php"
+  }
 }

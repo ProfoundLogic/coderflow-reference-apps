@@ -7,11 +7,20 @@ Minimal hello-world: a **.NET** API serving `GET /api/hello`, and a
 
 - `api/` — .NET backend. Serves `GET /api/hello` → `{"message":"Hello from the .NET API!"}` on `0.0.0.0:3001`.
 - `web/` — React front end. Dev server proxies `/api` → `http://localhost:3001`.
-- `environment.json` — an importable CoderFlow environment (a starter — complete the runtime/app-server config in CoderFlow, or replace it via Export).
+- `environment.json` — an importable CoderFlow environment, **preconfigured to launch**: the pre-clone runtime install, post-clone dependency install, and both application servers are already set.
 
-## Run it (two processes)
+## In CoderFlow (import and launch)
 
-Runtime to install: **.NET 8 SDK** and **Node.js** (for the front end).
+This environment is preconfigured — there's nothing to wire up by hand:
+
+1. **Import Environment → Git repository**, paste this repo's URL, **Load environments**, pick `dotnet-react`, **Import**.
+2. Build and launch it. The pre-clone script installs **.NET 8 SDK**, the post-clone action installs dependencies, and the application server starts the API (port 3001) and the React dev server (port 5173).
+
+Open the launch URL — it shows "Hello from the .NET API!", fetched through the dev-server proxy.
+
+## Run it locally (two processes)
+
+To run outside CoderFlow, install **.NET 8 SDK** and **Node.js** (for the front end), then:
 
 ```sh
 # 1. install dependencies
@@ -27,10 +36,3 @@ cd web && npm run dev
 
 Open the front end at `http://localhost:5173`. It shows
 "Hello from the .NET API!", fetched through the dev-server proxy.
-
-## In CoderFlow
-
-Import this environment (**Import Environment → Git repository**, then pick
-`dotnet-react`), or create one that clones this repo. Set the runtime above as the
-pre-clone step, the install lines as the post-clone action, and the two start
-commands as application servers (the API on port 3001).

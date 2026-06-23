@@ -12,9 +12,15 @@ combo gets `api/` (backend), `web/` (front end), an importable `environment.json
 and a `README.md`.
 
 ```bash
-scripts/generate.sh            # regenerate all combos
-scripts/generate.sh node-react # regenerate one
+scripts/generate.sh            # regenerate all combos + the standalone examples
+scripts/generate.sh node-react # regenerate one combo
+scripts/generate.sh php-html   # regenerate the single-origin example
 ```
+
+Two **standalone** examples aren't part of the backend × front-end grid:
+`php-html` (the single-origin model — one PHP process serves the page and API on
+one port) and `static` (no backend). Their app code is hand-authored; the
+generator only stamps their `environment.json` (and `php-html`'s `README.md`).
 
 - **Templates are the source of truth.** Edit `templates/backends/<name>` or
   `templates/frontends/<name>` (each is a real, minimal app), then regenerate.

@@ -1,0 +1,4 @@
+# PHP has no build output for this app. These are here only in case you add
+# Composer dependencies or a local env file later.
+/vendor/
+.env

@@ -18,8 +18,9 @@ Every combo follows the same shape, so only the per-stack values differ:
 
 ## The matrix
 
-Serving model is **two-process** (live reload) across the board: the API runs on
-`:3001`, the front-end dev server proxies `/api` to it.
+The grid below is **two-process** (live reload): the API runs on `:3001` and the
+front-end dev server proxies `/api` to it. This is the recommended model for
+actively iterating on a UI — edits reload the browser with no rebuild.
 
 | Backend ↓ / Front end → | Angular | React | Vue |
 |---|---|---|---|
@@ -29,7 +30,12 @@ Serving model is **two-process** (live reload) across the board: the API runs on
 | **Python** (FastAPI) | [`python-angular`](./python-angular) | [`python-react`](./python-react) | [`python-vue`](./python-vue) |
 | **PHP** (built-in server) | [`php-angular`](./php-angular) | [`php-react`](./php-react) | [`php-vue`](./php-vue) |
 
-Plus [`static/`](./static) — plain HTML/CSS/JS, no backend.
+Two standalone examples sit alongside the grid:
+
+- [`php-html`](./php-html) — the **single-origin** model: one PHP process serves
+  both the page and the API on one port, with no front-end build and no proxy.
+  The natural counterpart to the two-process grid.
+- [`static/`](./static) — plain HTML/CSS/JS, no backend.
 
 ## Use it in CoderFlow
 

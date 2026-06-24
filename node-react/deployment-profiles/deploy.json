@@ -1,0 +1,28 @@
+{
+  "description": "Build a deployable release artifact from this app, then (placeholder) ship it to the chosen target. Reference profile: it genuinely builds the React front end + the API into release.tgz, then prints the upload command instead of pushing — a hello-world has no real host or credentials.",
+  "parameters": {
+    "TARGET": {
+      "type": "select",
+      "label": "Target environment",
+      "description": "Which environment this release is for. In a real setup each target has its own host and credentials.",
+      "options": [
+        "qa",
+        "production"
+      ],
+      "default": "qa",
+      "required": true
+    },
+    "DRY_RUN": {
+      "type": "boolean",
+      "label": "Dry run (build & package only)",
+      "description": "When on, build release.tgz but skip the upload step. The reference profile has no real host to ship to, so leave this on.",
+      "default": true
+    },
+    "RELEASE_NOTES": {
+      "type": "textarea",
+      "label": "Release notes",
+      "description": "Optional notes recorded into the release bundle.",
+      "required": false
+    }
+  }
+}

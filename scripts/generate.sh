@@ -107,14 +107,17 @@ FRONTENDS=(angular react vue)
 
 log() { printf '  %s\n' "$*"; }
 
-# emit_env_json OUT IMAGE DESC PRECLONE POST_CLONE_ACTION SERVER_NAME START PORTS_JSON LAUNCH_JSON [FEEDBACK_WIDGET_JSON]
+# emit_env_json OUT IMAGE DESC PRECLONE POST_CLONE_ACTION SERVER_NAME START PORTS_JSON LAUNCH_JSON [FEEDBACK_WIDGET_JSON] [DEPLOYMENT_PROFILE_ORDER_JSON]
 # Writes a complete, importable environment.json. PRECLONE and POST_CLONE_ACTION
 # may be empty (then their keys are omitted). PORTS_JSON/LAUNCH_JSON are JSON arrays.
 # FEEDBACK_WIDGET_JSON (optional) is a JSON object merged into application_server —
 # used to enable auto-refresh-on-complete for environments with no live reload
 # (static, php-html). Omit it (defaults to null) everywhere else.
+# DEPLOYMENT_PROFILE_ORDER_JSON (optional) is a JSON array of deploy-profile names
+# (e.g. ["deploy"]); when set it adds deployment_profile_order. Omit (null) when the
+# environment carries no deploy profiles.
 emit_env_json() {
-  local out="$1" image="$2" desc="$3" preclone="$4" pca="$5" sname="$6" start="$7" ports="$8" launch="$9" fb="${10:-null}"
+  local out="$1" image="$2" desc="$3" preclone="$4" pca="$5" sname="$6" start="$7" ports="$8" launch="$9" fb="${10:-null}" dpo="${11:-null}"
 
   local repo
   repo=$(jq -n --arg url "$REPO_URL" --arg pca "$pca" \
@@ -131,6 +134,7 @@ emit_env_json() {
     --argjson ports "$ports" \
     --argjson launch "$launch" \
     --argjson fb "$fb" \
+    --argjson dpo "$dpo" \
     '{ image_name: $image, default_agent: "claude", description: $desc }
      + (if $preclone != "" then { docker_config: { pre_clone_instructions: $preclone, post_clone_instructions: "" } } else {} end)
      + { repos: [ $repo ],
@@ -144,7 +148,8 @@ emit_env_json() {
            }
            + (if $fb != null then { feedback_widget: $fb } else {} end)
          ),
-         standardInstructions: { outputRequirements: true } }' \
+         standardInstructions: { outputRequirements: true } }
+     + (if $dpo != null then { deployment_profile_order: $dpo } else {} end)' \
     > "$out"
 }
 
@@ -161,6 +166,16 @@ render_combo() {
   local be_label="${BE_LABEL[$be]}" fe_label="${FE_LABEL[$fe]}"
   local fe_port="${FE_PORT[$fe]}"
 
+  # Deploy-profile demo: one combo carries a reference Deploy Profile so the
+  # imported environment shows the deploy flow end to end. Scoped to node-react
+  # for now (see render_deploy_profile); flip on others by extending this test.
+  local dpo_json="null"
+  local has_deploy_profile=""
+  if [ "$combo" = "node-react" ]; then
+    has_deploy_profile=1
+    dpo_json='["deploy"]'
+  fi
+
   # post-clone: install backend deps (if any), then front-end deps.
   local pca=""
   if [ -n "${BE_RESTORE[$be]}" ]; then
@@ -176,7 +191,8 @@ render_combo() {
   local desc="Reference environment — ${be_label} API + ${fe_label} front end (two-process), preconfigured to import and launch. Clones coderflow-reference-apps and runs the ${combo} app."
 
   emit_env_json "$dest/environment.json" "coderflow-ref-${combo}" "$desc" \
-    "${BE_PRECLONE[$be]}" "$pca" "${be_label} + ${fe_label}" "$start" "$ports_json" "$launch_json"
+    "${BE_PRECLONE[$be]}" "$pca" "${be_label} + ${fe_label}" "$start" "$ports_json" "$launch_json" \
+    "null" "$dpo_json"
 
   # README install/run lines (for running the combo locally, outside CoderFlow).
   local be_install_line fe_install_line be_start_line fe_start_line
@@ -280,7 +296,144 @@ setsid nohup <command> > /tmp/server.log 2>&1 < /dev/null & disown
 \`\`\`
 MD
 
+  if [ -n "$has_deploy_profile" ]; then
+    render_deploy_profile "$dest" "$combo"
+  fi
+
   log "$combo"
+}
+
+# render_deploy_profile DEST COMBO
+# Writes a reference Deploy Profile (deployment-profiles/deploy.{json,sh}) into a
+# combo so the imported CoderFlow environment demonstrates the deploy flow end to
+# end. The script BUILDS a real release artifact (front-end bundle + API + prod
+# deps -> release.tgz) from the cloned source, then PRINTS the upload command
+# instead of pushing — a hello-world has no real QA/Prod host or credentials, so
+# the actual ship step is a clearly-labelled placeholder. The on-disk files ride
+# along with the environment on git-import (the importer copies the whole combo
+# dir), and deployment_profile_order in environment.json surfaces it in the UI.
+render_deploy_profile() {
+  local dest="$1" combo="$2"
+  local pdir="$dest/deployment-profiles"
+  mkdir -p "$pdir"
+
+  # deploy.json — the profile's parameter surface (flat shape; each parameter is
+  # passed to deploy.sh as an environment variable of the same name). No secrets:
+  # the reference environment defines none, so the profile must not require one.
+  jq -n '{
+    description: "Build a deployable release artifact from this app, then (placeholder) ship it to the chosen target. Reference profile: it genuinely builds the React front end + the API into release.tgz, then prints the upload command instead of pushing — a hello-world has no real host or credentials.",
+    parameters: {
+      TARGET: {
+        type: "select",
+        label: "Target environment",
+        description: "Which environment this release is for. In a real setup each target has its own host and credentials.",
+        options: ["qa", "production"],
+        default: "qa",
+        required: true
+      },
+      DRY_RUN: {
+        type: "boolean",
+        label: "Dry run (build & package only)",
+        description: "When on, build release.tgz but skip the upload step. The reference profile has no real host to ship to, so leave this on.",
+        default: true
+      },
+      RELEASE_NOTES: {
+        type: "textarea",
+        label: "Release notes",
+        description: "Optional notes recorded into the release bundle.",
+        required: false
+      }
+    }
+  }' > "$pdir/deploy.json"
+
+  # deploy.sh — runs in a container from this environment's image, as the coder
+  # user, with the repo cloned into /workspace. @@APP_DIR@@ is the only
+  # generation-time substitution; everything else is the script's own runtime.
+  cat > "$pdir/deploy.sh" <<'SH'
+#!/usr/bin/env bash
+#
+# Reference Deploy Profile — node-react
+# =====================================
+# WHAT THIS SHOWS
+#   How a CoderFlow Deploy Profile runs: in a container built from THIS
+#   environment's image, with the repo cloned into /workspace, receiving each
+#   profile parameter as an environment variable (TARGET, DRY_RUN, RELEASE_NOTES).
+#
+# WHAT IT REALLY DOES
+#   Builds a genuine, deployable release artifact from the cloned source: the
+#   React front end (vite build) plus the API and its production dependencies,
+#   assembled into release.tgz.
+#
+# WHAT IT DELIBERATELY DOES NOT DO
+#   It does not push anywhere. A hello-world has no real QA/Prod host or
+#   credentials, so the upload is a clearly-labelled placeholder (see the end).
+#   To make it a real deploy: add the target host + an SSH key as environment
+#   Secrets (available_for: ["deploy"]) and fill in the marked block.
+set -euo pipefail
+
+APP_DIR="@@APP_DIR@@"
+TARGET="${TARGET:-qa}"
+DRY_RUN="${DRY_RUN:-true}"
+
+echo "=================================================="
+echo " CoderFlow reference deploy — node-react"
+echo "   Target:   ${TARGET}"
+echo "   Dry run:  ${DRY_RUN}"
+echo "=================================================="
+
+cd "${APP_DIR}"
+
+echo
+echo "==> [1/3] Building the React front end (vite build)..."
+( cd web && npm ci --no-audit --no-fund && npm run build )
+
+echo
+echo "==> [2/3] Installing the API's production dependencies..."
+( cd api && npm ci --omit=dev --no-audit --no-fund )
+
+echo
+echo "==> [3/3] Assembling the release bundle..."
+rm -rf release release.tgz
+mkdir -p release/api
+cp -R api/index.js api/package.json api/package-lock.json api/node_modules release/api/
+cp -R web/dist release/web
+if [ -n "${RELEASE_NOTES:-}" ]; then
+  printf '%s\n' "${RELEASE_NOTES}" > release/RELEASE_NOTES.txt
+fi
+tar -czf release.tgz -C release .
+echo "    Built release.tgz:"
+ls -lh release.tgz
+echo "    Bundle layout:"
+( cd release && find . -maxdepth 2 -type d | sort )
+
+echo
+echo "--------------------------------------------------"
+if [ "${DRY_RUN}" = "true" ]; then
+  echo " DRY RUN — release built, upload to '${TARGET}' skipped."
+  echo " A real deploy would now run the command below."
+else
+  echo " DEPLOY to '${TARGET}' — placeholder: this reference environment has no"
+  echo " host configured, so there is nothing to upload to. The command a real"
+  echo " deploy would run:"
+fi
+cat <<'PLACEHOLDER'
+
+    # Ship release.tgz to the target host over SSH. Provide DEPLOY_HOST, DEPLOY_USER,
+    # and an SSH key as environment Secrets (available_for: ["deploy"]), then
+    # replace this block with:
+    #
+    #   scp release.tgz "${DEPLOY_USER}@${DEPLOY_HOST}:/var/www/app/"
+    #   ssh "${DEPLOY_USER}@${DEPLOY_HOST}" \
+    #     'cd /var/www/app && tar -xzf release.tgz && systemctl restart app'
+
+PLACEHOLDER
+echo "--------------------------------------------------"
+echo "Done."
+SH
+
+  # Substitute the app directory and make the script executable.
+  sed -i "s#@@APP_DIR@@#${REPO_ROOT}/${combo}#g" "$pdir/deploy.sh"
+  chmod +x "$pdir/deploy.sh"
 }
 
 render_static() {

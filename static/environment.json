@@ -29,7 +29,11 @@
         "description": "Static site"
       }
     ],
-    "start_command": "cd /workspace/coderflow-reference-apps/static && python3 -m http.server 8000 --bind 0.0.0.0"
+    "start_command": "cd /workspace/coderflow-reference-apps/static && python3 -m http.server 8000 --bind 0.0.0.0",
+    "feedback_widget": {
+      "auto_refresh_on_complete": true,
+      "refresh_delay_ms": 1000
+    }
   },
   "standardInstructions": {
     "outputRequirements": true

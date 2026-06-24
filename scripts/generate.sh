@@ -104,11 +104,14 @@ FRONTENDS=(angular react vue)
 
 log() { printf '  %s\n' "$*"; }
 
-# emit_env_json OUT IMAGE DESC PRECLONE POST_CLONE_ACTION SERVER_NAME START PORTS_JSON LAUNCH_JSON
+# emit_env_json OUT IMAGE DESC PRECLONE POST_CLONE_ACTION SERVER_NAME START PORTS_JSON LAUNCH_JSON [FEEDBACK_WIDGET_JSON]
 # Writes a complete, importable environment.json. PRECLONE and POST_CLONE_ACTION
 # may be empty (then their keys are omitted). PORTS_JSON/LAUNCH_JSON are JSON arrays.
+# FEEDBACK_WIDGET_JSON (optional) is a JSON object merged into application_server —
+# used to enable auto-refresh-on-complete for environments with no live reload
+# (static, php-html). Omit it (defaults to null) everywhere else.
 emit_env_json() {
-  local out="$1" image="$2" desc="$3" preclone="$4" pca="$5" sname="$6" start="$7" ports="$8" launch="$9"
+  local out="$1" image="$2" desc="$3" preclone="$4" pca="$5" sname="$6" start="$7" ports="$8" launch="$9" fb="${10:-null}"
 
   local repo
   repo=$(jq -n --arg url "$REPO_URL" --arg pca "$pca" \
@@ -124,16 +127,20 @@ emit_env_json() {
     --argjson repo "$repo" \
     --argjson ports "$ports" \
     --argjson launch "$launch" \
+    --argjson fb "$fb" \
     '{ image_name: $image, default_agent: "claude", description: $desc }
      + (if $preclone != "" then { docker_config: { pre_clone_instructions: $preclone, post_clone_instructions: "" } } else {} end)
      + { repos: [ $repo ],
-         application_server: {
-           enabled: true,
-           name: $sname,
-           ports: $ports,
-           launch_urls: $launch,
-           start_command: $start
-         },
+         application_server: (
+           {
+             enabled: true,
+             name: $sname,
+             ports: $ports,
+             launch_urls: $launch,
+             start_command: $start
+           }
+           + (if $fb != null then { feedback_widget: $fb } else {} end)
+         ),
          standardInstructions: { outputRequirements: true } }' \
     > "$out"
 }
@@ -283,8 +290,11 @@ render_static() {
   local desc="Reference environment — plain HTML/CSS/JS, no backend, preconfigured to import and launch. Clones coderflow-reference-apps and serves the static/ folder on port 8000."
 
   # No runtime install (python3 is in the base image) and nothing to build.
+  # Auto-refresh on task completion: static has no live reload (plain http.server),
+  # so reload the preview when a task finishes instead of forcing a manual refresh.
   emit_env_json "$dest/environment.json" "coderflow-ref-static" "$desc" \
-    "" "" "Static" "$start" "$ports_json" "$launch_json"
+    "" "" "Static" "$start" "$ports_json" "$launch_json" \
+    '{"auto_refresh_on_complete":true,"refresh_delay_ms":1000}'
 
   cat > "$dest/AGENTS.md" <<'MD'
 # static — plain HTML/CSS/JS reference app
@@ -323,8 +333,11 @@ render_php_html() {
   local desc="Reference environment — single-origin PHP (server-rendered, one port, no build, no proxy), preconfigured to import and launch. Clones coderflow-reference-apps and runs the php-html app on port 8000."
 
   # Single-origin: no front-end build, so no post-clone action.
+  # Auto-refresh on task completion: php-html is server-rendered with no live
+  # reload, so reload the preview when a task finishes instead of a manual refresh.
   emit_env_json "$dest/environment.json" "coderflow-ref-php-html" "$desc" \
-    "$preclone" "" "PHP" "$start" "$ports_json" "$launch_json"
+    "$preclone" "" "PHP" "$start" "$ports_json" "$launch_json" \
+    '{"auto_refresh_on_complete":true,"refresh_delay_ms":1000}'
 
   cat > "$dest/README.md" <<'MD'
 # php-html — PHP (single-origin)

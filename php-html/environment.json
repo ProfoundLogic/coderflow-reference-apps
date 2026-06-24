@@ -33,7 +33,11 @@
         "description": "PHP single-origin app"
       }
     ],
-    "start_command": "cd /workspace/coderflow-reference-apps/php-html && php -S 0.0.0.0:8000 router.php"
+    "start_command": "cd /workspace/coderflow-reference-apps/php-html && php -S 0.0.0.0:8000 router.php",
+    "feedback_widget": {
+      "auto_refresh_on_complete": true,
+      "refresh_delay_ms": 1000
+    }
   },
   "standardInstructions": {
     "outputRequirements": true

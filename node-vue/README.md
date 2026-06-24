@@ -1,7 +1,7 @@
 # node-vue — Node.js + Vue
 
-Minimal hello-world: a **Node.js** API serving `GET /api/hello`, and a
-**Vue** front end that fetches and displays it. Two-process (live reload).
+Minimal hello-world: a **Node.js** API serving `GET /api/hello`, and the
+**Vue** front end fetches and displays it. Two-process (live reload).
 
 ## Layout
 

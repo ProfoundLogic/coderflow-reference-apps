@@ -35,5 +35,8 @@
       }
     ],
     "start_command": "cd /workspace/coderflow-reference-apps/node-angular/api && npm start &\ncd /workspace/coderflow-reference-apps/node-angular/web && npm start"
+  },
+  "standardInstructions": {
+    "outputRequirements": true
   }
 }

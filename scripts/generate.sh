@@ -9,6 +9,7 @@
 #     api/               # backend serving GET /api/hello on 0.0.0.0:3001
 #     web/               # front-end dev server, proxies /api -> :3001
 #     environment.json   # importable CoderFlow environment, preconfigured to launch
+#     AGENTS.md          # per-environment agent instructions (imported as CLAUDE.md)
 #     README.md          # how to run it
 #
 # The committed combos are the source of truth that CoderFlow clones; this
@@ -120,7 +121,8 @@ emit_env_json() {
            ports: $ports,
            launch_urls: $launch,
            start_command: $start
-         } }' \
+         },
+         standardInstructions: { outputRequirements: true } }' \
     > "$out"
 }
 
@@ -168,8 +170,8 @@ render_combo() {
   cat > "$dest/README.md" <<MD
 # ${combo} — ${be_label} + ${fe_label}
 
-Minimal hello-world: a **${be_label}** API serving \`GET /api/hello\`, and a
-**${fe_label}** front end that fetches and displays it. Two-process (live reload).
+Minimal hello-world: a **${be_label}** API serving \`GET /api/hello\`, and the
+**${fe_label}** front end fetches and displays it. Two-process (live reload).
 
 ## Layout
 
@@ -206,6 +208,32 @@ Open the front end at \`http://localhost:${fe_port}\`. It shows
 "Hello from the ${be_label} API!", fetched through the dev-server proxy.
 MD
 
+  # AGENTS.md — per-environment custom instructions, delivered to the agent as
+  # CLAUDE.md. Imported with the environment and used as its project context.
+  cat > "$dest/AGENTS.md" <<MD
+# ${combo} — ${be_label} + ${fe_label} reference app
+
+A minimal two-process "hello world" — **${be_label}** API + **${fe_label}** front
+end — that fetches and displays \`GET /api/hello\`.
+
+## Layout (under \`coderflow-reference-apps/${combo}/\`)
+
+- \`api/\` — ${be_label} backend. Serves \`GET /api/hello\` → \`{"message":"Hello from the ${be_label} API!"}\` on \`0.0.0.0:3001\`.
+- \`web/\` — ${fe_label} front end. Dev server on port ${fe_port}; proxies \`/api\` to the API.
+
+These run as **two processes** (already configured as the application server): the
+API in the background, then the front-end dev server. The page shows
+"Hello from the ${be_label} API!".
+
+## Working here
+
+- Keep the split: backend code in \`api/\`, UI in \`web/\`.
+- The front end reaches the API through the \`/api\` proxy — fetch relative
+  \`/api/...\` paths; don't hardcode the API origin or port.
+- The API binds the port from the PORT env var (default 3001); the dev-server
+  proxy targets \`http://localhost:3001\`.
+MD
+
   log "$combo"
 }
 
@@ -221,7 +249,22 @@ render_static() {
   # No runtime install (python3 is in the base image) and nothing to build.
   emit_env_json "$dest/environment.json" "coderflow-ref-static" "$desc" \
     "" "" "Static" "$start" "$ports_json" "$launch_json"
-  log "static (environment.json)"
+
+  cat > "$dest/AGENTS.md" <<'MD'
+# static — plain HTML/CSS/JS reference app
+
+A minimal **static site** with no backend: plain HTML/CSS/JS served on port 8000.
+
+## Layout (under `coderflow-reference-apps/static/`)
+
+- `index.html`, `styles.css`, `app.js` — the whole site. No build step, no API.
+
+## Working here
+
+- There's no backend and no build step — edit the files and refresh to see changes.
+MD
+
+  log "static (environment.json + AGENTS.md)"
 }
 
 # php-html is the single-origin example: one PHP process serves the page and the
@@ -289,6 +332,23 @@ you get live reload at the cost of a second process and a proxy. Here one proces
 serves everything on one port: simpler, and closer to how a single-host app
 deploys. There's no hot reload — you refresh to see changes — but with
 server-rendered PHP there's nothing to rebuild first.
+MD
+
+  cat > "$dest/AGENTS.md" <<'MD'
+# php-html — PHP single-origin reference app
+
+A minimal **single-origin** "hello world": one PHP process serves both the page
+and the API on **one port** (8000) — no front-end build, no proxy, no CORS.
+
+## Layout (under `coderflow-reference-apps/php-html/`)
+
+- `router.php` — built-in-server router. `/api/hello` returns `{"message":"Hello from the PHP API!"}`; every other path renders the page.
+- `index.php` — the server-rendered page; fetches `/api/hello` from the same origin.
+
+## Working here
+
+- It's single-origin: the page and API share one port, so fetch relative `/api/...` paths — there's no proxy and no CORS to configure.
+- Server-rendered PHP: there's no build step. Edit a `.php` file and refresh.
 MD
 
   log "php-html (single-origin)"

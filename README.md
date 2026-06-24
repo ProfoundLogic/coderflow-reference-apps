@@ -13,6 +13,7 @@ Every combo follows the same shape, so only the per-stack values differ:
   api/               # backend, serves GET /api/hello on 0.0.0.0:3001
   web/               # front-end dev server, proxies /api -> :3001
   environment.json   # an importable CoderFlow environment (preconfigured to launch)
+  AGENTS.md          # per-environment agent instructions (imported as CLAUDE.md)
   README.md          # how to run this combo
 ```
 

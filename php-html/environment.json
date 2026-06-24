@@ -34,5 +34,8 @@
       }
     ],
     "start_command": "cd /workspace/coderflow-reference-apps/php-html && php -S 0.0.0.0:8000 router.php"
+  },
+  "standardInstructions": {
+    "outputRequirements": true
   }
 }

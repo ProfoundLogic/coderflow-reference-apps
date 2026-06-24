@@ -1,7 +1,7 @@
 # php-angular — PHP + Angular
 
-Minimal hello-world: a **PHP** API serving `GET /api/hello`, and a
-**Angular** front end that fetches and displays it. Two-process (live reload).
+Minimal hello-world: a **PHP** API serving `GET /api/hello`, and the
+**Angular** front end fetches and displays it. Two-process (live reload).
 
 ## Layout
 

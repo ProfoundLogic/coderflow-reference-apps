@@ -39,5 +39,8 @@
       }
     ],
     "start_command": "cd /workspace/coderflow-reference-apps/dotnet-angular/api && dotnet run &\ncd /workspace/coderflow-reference-apps/dotnet-angular/web && npm start"
+  },
+  "standardInstructions": {
+    "outputRequirements": true
   }
 }

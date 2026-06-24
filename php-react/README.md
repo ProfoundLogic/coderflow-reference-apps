@@ -1,7 +1,7 @@
 # php-react — PHP + React
 
-Minimal hello-world: a **PHP** API serving `GET /api/hello`, and a
-**React** front end that fetches and displays it. Two-process (live reload).
+Minimal hello-world: a **PHP** API serving `GET /api/hello`, and the
+**React** front end fetches and displays it. Two-process (live reload).
 
 ## Layout
 

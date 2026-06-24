@@ -35,5 +35,8 @@
       }
     ],
     "start_command": "cd /workspace/coderflow-reference-apps/node-vue/api && npm start &\ncd /workspace/coderflow-reference-apps/node-vue/web && npm run dev"
+  },
+  "standardInstructions": {
+    "outputRequirements": true
   }
 }

@@ -1,7 +1,7 @@
 # node-angular — Node.js + Angular
 
-Minimal hello-world: a **Node.js** API serving `GET /api/hello`, and a
-**Angular** front end that fetches and displays it. Two-process (live reload).
+Minimal hello-world: a **Node.js** API serving `GET /api/hello`, and the
+**Angular** front end fetches and displays it. Two-process (live reload).
 
 ## Layout
 

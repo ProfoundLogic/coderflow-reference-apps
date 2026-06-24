@@ -39,5 +39,8 @@
       }
     ],
     "start_command": "cd /workspace/coderflow-reference-apps/php-vue/api && php -S 0.0.0.0:3001 router.php &\ncd /workspace/coderflow-reference-apps/php-vue/web && npm run dev"
+  },
+  "standardInstructions": {
+    "outputRequirements": true
   }
 }

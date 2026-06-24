@@ -1,29 +1,27 @@
 #!/usr/bin/env bash
 #
-# Reference Deploy Profile — Node.js + React
+# Reference Deploy Profile — PHP single-origin app (source)
 # WHAT THIS SHOWS
 #   How a CoderFlow Deploy Profile runs: in a container built from THIS
 #   environment's image, with the repo cloned into /workspace, receiving each
 #   profile parameter as an environment variable (TARGET, DRY_RUN, RELEASE_NOTES).
 #
 # WHAT IT REALLY DOES
-#   Builds a genuine, deployable release artifact from the cloned source: the
-#   React front end (static build) plus the Node.js API
-#   (index.js + production node_modules), assembled into release.tgz.
+#   Packages this app's deployable files into release.tgz.
 #
 # WHAT IT DELIBERATELY DOES NOT DO
-#   It does not push anywhere. A hello-world has no real QA/Prod host or
-#   credentials, so the upload is a clearly-labelled placeholder (see the end).
-#   To make it a real deploy: add the target host + an SSH key as environment
-#   Secrets (available_for: ["deploy"]) and fill in the marked block.
+#   It does not push anywhere. This reference environment has no real QA/Prod host
+#   or credentials, so the upload is a clearly-labelled placeholder. To make it
+#   real, add the host + an SSH key as environment Secrets (available_for:
+#   ["deploy"]) and fill in the marked block.
 set -euo pipefail
 
-APP_DIR="/workspace/coderflow-reference-apps/node-react"
+APP_DIR="/workspace/coderflow-reference-apps/php-html"
 TARGET="${TARGET:-qa}"
 DRY_RUN="${DRY_RUN:-true}"
 
 echo "=================================================="
-echo " CoderFlow reference deploy — Node.js + React"
+echo " CoderFlow reference deploy — PHP single-origin app (source)"
 echo "   Target:   ${TARGET}"
 echo "   Dry run:  ${DRY_RUN}"
 echo "=================================================="
@@ -31,31 +29,22 @@ echo "=================================================="
 cd "${APP_DIR}"
 
 echo
-echo "==> [1/3] Building the React front end (static build)..."
-( cd web && npm ci --no-audit --no-fund && npm run build )
-
-echo
-echo "==> [2/3] Preparing the Node.js API (index.js + production node_modules)..."
-(
-  cd api
-  npm ci --omit=dev --no-audit --no-fund
-)
-
-echo
-echo "==> [3/3] Assembling the release bundle..."
+echo "==> [1/2] Assembling the release bundle (PHP single-origin app (source))..."
 rm -rf release release.tgz
-mkdir -p release/api
-cp -R api/index.js api/package.json api/package-lock.json api/node_modules release/api/
-cp -R web/dist release/web
+mkdir -p release
+for f in *; do
+  case "$f" in
+    environment.json|AGENTS.md|README.md|deployment-profiles|release|release.tgz) continue ;;
+  esac
+  cp -R "$f" release/
+done
 if [ -n "${RELEASE_NOTES:-}" ]; then
   printf '%s\n' "${RELEASE_NOTES}" > release/RELEASE_NOTES.txt
 fi
 tar -czf release.tgz -C release .
 echo "    Built release.tgz:"
 ls -lh release.tgz
-echo "    Bundle layout:"
-( cd release && find . -maxdepth 2 -type d | sort )
-echo "    On the target, the API would start with: node index.js"
+echo "    On the target, serve it with: php -S 0.0.0.0:8000 router.php"
 
 echo
 echo "--------------------------------------------------"
@@ -75,7 +64,7 @@ cat <<'PLACEHOLDER'
     #
     #   scp release.tgz "${DEPLOY_USER}@${DEPLOY_HOST}:/var/www/app/"
     #   ssh "${DEPLOY_USER}@${DEPLOY_HOST}" \
-    #     'cd /var/www/app && tar -xzf release.tgz && systemctl restart app'
+    #     'cd /var/www/app && tar -xzf release.tgz'
 
 PLACEHOLDER
 echo "--------------------------------------------------"

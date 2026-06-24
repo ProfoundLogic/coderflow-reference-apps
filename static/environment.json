@@ -37,5 +37,8 @@
   },
   "standardInstructions": {
     "outputRequirements": true
-  }
+  },
+  "deployment_profile_order": [
+    "deploy"
+  ]
 }

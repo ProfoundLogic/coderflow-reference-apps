@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Reference Deploy Profile — Node.js + React
+# Reference Deploy Profile — Python + React
 # WHAT THIS SHOWS
 #   How a CoderFlow Deploy Profile runs: in a container built from THIS
 #   environment's image, with the repo cloned into /workspace, receiving each
@@ -8,8 +8,8 @@
 #
 # WHAT IT REALLY DOES
 #   Builds a genuine, deployable release artifact from the cloned source: the
-#   React front end (static build) plus the Node.js API
-#   (index.js + production node_modules), assembled into release.tgz.
+#   React front end (static build) plus the Python API
+#   (source + vendored dependencies), assembled into release.tgz.
 #
 # WHAT IT DELIBERATELY DOES NOT DO
 #   It does not push anywhere. A hello-world has no real QA/Prod host or
@@ -18,12 +18,12 @@
 #   Secrets (available_for: ["deploy"]) and fill in the marked block.
 set -euo pipefail
 
-APP_DIR="/workspace/coderflow-reference-apps/node-react"
+APP_DIR="/workspace/coderflow-reference-apps/python-react"
 TARGET="${TARGET:-qa}"
 DRY_RUN="${DRY_RUN:-true}"
 
 echo "=================================================="
-echo " CoderFlow reference deploy — Node.js + React"
+echo " CoderFlow reference deploy — Python + React"
 echo "   Target:   ${TARGET}"
 echo "   Dry run:  ${DRY_RUN}"
 echo "=================================================="
@@ -35,17 +35,17 @@ echo "==> [1/3] Building the React front end (static build)..."
 ( cd web && npm ci --no-audit --no-fund && npm run build )
 
 echo
-echo "==> [2/3] Preparing the Node.js API (index.js + production node_modules)..."
+echo "==> [2/3] Preparing the Python API (source + vendored dependencies)..."
 (
   cd api
-  npm ci --omit=dev --no-audit --no-fund
+  pip install --break-system-packages -r requirements.txt -t vendor
 )
 
 echo
 echo "==> [3/3] Assembling the release bundle..."
 rm -rf release release.tgz
 mkdir -p release/api
-cp -R api/index.js api/package.json api/package-lock.json api/node_modules release/api/
+cp -R api/main.py api/requirements.txt api/vendor release/api/
 cp -R web/dist release/web
 if [ -n "${RELEASE_NOTES:-}" ]; then
   printf '%s\n' "${RELEASE_NOTES}" > release/RELEASE_NOTES.txt
@@ -55,7 +55,7 @@ echo "    Built release.tgz:"
 ls -lh release.tgz
 echo "    Bundle layout:"
 ( cd release && find . -maxdepth 2 -type d | sort )
-echo "    On the target, the API would start with: node index.js"
+echo "    On the target, the API would start with: PYTHONPATH=vendor uvicorn main:app --host 0.0.0.0 --port 3001"
 
 echo
 echo "--------------------------------------------------"

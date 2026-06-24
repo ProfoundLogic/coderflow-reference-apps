@@ -95,6 +95,42 @@ declare -A BE_PRECLONE=(
   [php]="RUN apt-get update && apt-get install -y php-cli && rm -rf /var/lib/apt/lists/*"
 )
 
+# Deploy-profile build metadata (per backend), used by render_deploy_profile to
+# build and package a real release artifact for the combo's API. Values are
+# single-line and substituted into deploy.sh (so they avoid '&', '#', '\').
+#   BUILD   bare command, run inside ( cd api ; ... ) — builds/restores the API.
+#   PACKAGE copies the API's deployable bits into release/api/ (run from app dir).
+#   ARTIFACT short human description of what that artifact is.
+#   START   how the API would be started on the target (shown in the log).
+declare -A BE_DEPLOY_BUILD=(
+  [node]="npm ci --omit=dev --no-audit --no-fund"
+  [dotnet]="dotnet publish -c Release -o publish"
+  [java]="mvn -q -DskipTests package"
+  [python]="pip install --break-system-packages -r requirements.txt -t vendor"
+  [php]="echo '    (PHP runs from source - nothing to build)'"
+)
+declare -A BE_DEPLOY_PACKAGE=(
+  [node]="cp -R api/index.js api/package.json api/package-lock.json api/node_modules release/api/"
+  [dotnet]="cp -R api/publish/. release/api/"
+  [java]="cp api/target/*.jar release/api/app.jar"
+  [python]="cp -R api/main.py api/requirements.txt api/vendor release/api/"
+  [php]="cp -R api/. release/api/"
+)
+declare -A BE_DEPLOY_ARTIFACT=(
+  [node]="index.js + production node_modules"
+  [dotnet]="framework-dependent publish output"
+  [java]="the Spring Boot executable jar"
+  [python]="source + vendored dependencies"
+  [php]="source files (runs as-is)"
+)
+declare -A BE_DEPLOY_START=(
+  [node]="node index.js"
+  [dotnet]="dotnet Api.dll"
+  [java]="java -jar app.jar"
+  [python]="PYTHONPATH=vendor uvicorn main:app --host 0.0.0.0 --port 3001"
+  [php]="php -S 0.0.0.0:3001 router.php"
+)
+
 # Front-end metadata.
 declare -A FE_LABEL=( [angular]="Angular" [react]="React" [vue]="Vue" )
 # Start the front-end dev server (bare command, run in web/). Each template's
@@ -166,15 +202,9 @@ render_combo() {
   local be_label="${BE_LABEL[$be]}" fe_label="${FE_LABEL[$fe]}"
   local fe_port="${FE_PORT[$fe]}"
 
-  # Deploy-profile demo: one combo carries a reference Deploy Profile so the
-  # imported environment shows the deploy flow end to end. Scoped to node-react
-  # for now (see render_deploy_profile); flip on others by extending this test.
-  local dpo_json="null"
-  local has_deploy_profile=""
-  if [ "$combo" = "node-react" ]; then
-    has_deploy_profile=1
-    dpo_json='["deploy"]'
-  fi
+  # Deploy-profile demo: every combo carries a reference Deploy Profile so the
+  # imported environment shows the deploy flow end to end (see render_deploy_profile).
+  local dpo_json='["deploy"]'
 
   # post-clone: install backend deps (if any), then front-end deps.
   local pca=""
@@ -296,32 +326,21 @@ setsid nohup <command> > /tmp/server.log 2>&1 < /dev/null & disown
 \`\`\`
 MD
 
-  if [ -n "$has_deploy_profile" ]; then
-    render_deploy_profile "$dest" "$combo"
-  fi
+  render_deploy_profile "$dest" "$combo" "$be" "$fe"
 
   log "$combo"
 }
 
-# render_deploy_profile DEST COMBO
-# Writes a reference Deploy Profile (deployment-profiles/deploy.{json,sh}) into a
-# combo so the imported CoderFlow environment demonstrates the deploy flow end to
-# end. The script BUILDS a real release artifact (front-end bundle + API + prod
-# deps -> release.tgz) from the cloned source, then PRINTS the upload command
-# instead of pushing — a hello-world has no real QA/Prod host or credentials, so
-# the actual ship step is a clearly-labelled placeholder. The on-disk files ride
-# along with the environment on git-import (the importer copies the whole combo
-# dir), and deployment_profile_order in environment.json surfaces it in the UI.
-render_deploy_profile() {
-  local dest="$1" combo="$2"
-  local pdir="$dest/deployment-profiles"
-  mkdir -p "$pdir"
-
-  # deploy.json — the profile's parameter surface (flat shape; each parameter is
-  # passed to deploy.sh as an environment variable of the same name). No secrets:
-  # the reference environment defines none, so the profile must not require one.
+# emit_deploy_json PDIR
+# Writes the shared deploy.json (the same parameter surface for every combo) into
+# a deployment-profiles dir. Flat parameter shape — each parameter is passed to
+# deploy.sh as an environment variable of the same name. No secrets: the
+# reference environments define none, so the profile must not require one (a
+# missing required secret would block the run).
+emit_deploy_json() {
+  local pdir="$1"
   jq -n '{
-    description: "Build a deployable release artifact from this app, then (placeholder) ship it to the chosen target. Reference profile: it genuinely builds the React front end + the API into release.tgz, then prints the upload command instead of pushing — a hello-world has no real host or credentials.",
+    description: "Build a deployable release artifact from this app, then (placeholder) ship it to the chosen target. Reference profile: it genuinely builds the front end + the API into release.tgz, then prints the upload command instead of pushing — a hello-world has no real host or credentials.",
     parameters: {
       TARGET: {
         type: "select",
@@ -345,15 +364,31 @@ render_deploy_profile() {
       }
     }
   }' > "$pdir/deploy.json"
+}
+
+# render_deploy_profile DEST COMBO BE FE
+# Writes a reference Deploy Profile (deployment-profiles/deploy.{json,sh}) into a
+# two-process combo so the imported CoderFlow environment demonstrates the deploy
+# flow end to end. The script BUILDS a real release artifact (front-end static
+# build + the API's per-stack artifact -> release.tgz) from the cloned source,
+# then PRINTS the upload command instead of pushing — a hello-world has no real
+# QA/Prod host or credentials, so the ship step is a clearly-labelled placeholder.
+# The on-disk files ride along with the environment on git-import (the importer
+# copies the whole combo dir); deployment_profile_order surfaces it in the UI.
+render_deploy_profile() {
+  local dest="$1" combo="$2" be="$3" fe="$4"
+  local pdir="$dest/deployment-profiles"
+  mkdir -p "$pdir"
+  emit_deploy_json "$pdir"
 
   # deploy.sh — runs in a container from this environment's image, as the coder
-  # user, with the repo cloned into /workspace. @@APP_DIR@@ is the only
-  # generation-time substitution; everything else is the script's own runtime.
+  # user, with the repo cloned into /workspace. The @@TOKENS@@ are the only
+  # generation-time substitutions (single-line, no '&'/'#'/'\'); everything else
+  # is the script's own runtime.
   cat > "$pdir/deploy.sh" <<'SH'
 #!/usr/bin/env bash
 #
-# Reference Deploy Profile — node-react
-# =====================================
+# Reference Deploy Profile — @@BE_LABEL@@ + @@FE_LABEL@@
 # WHAT THIS SHOWS
 #   How a CoderFlow Deploy Profile runs: in a container built from THIS
 #   environment's image, with the repo cloned into /workspace, receiving each
@@ -361,8 +396,8 @@ render_deploy_profile() {
 #
 # WHAT IT REALLY DOES
 #   Builds a genuine, deployable release artifact from the cloned source: the
-#   React front end (vite build) plus the API and its production dependencies,
-#   assembled into release.tgz.
+#   @@FE_LABEL@@ front end (static build) plus the @@BE_LABEL@@ API
+#   (@@BE_ARTIFACT@@), assembled into release.tgz.
 #
 # WHAT IT DELIBERATELY DOES NOT DO
 #   It does not push anywhere. A hello-world has no real QA/Prod host or
@@ -376,7 +411,7 @@ TARGET="${TARGET:-qa}"
 DRY_RUN="${DRY_RUN:-true}"
 
 echo "=================================================="
-echo " CoderFlow reference deploy — node-react"
+echo " CoderFlow reference deploy — @@BE_LABEL@@ + @@FE_LABEL@@"
 echo "   Target:   ${TARGET}"
 echo "   Dry run:  ${DRY_RUN}"
 echo "=================================================="
@@ -384,18 +419,21 @@ echo "=================================================="
 cd "${APP_DIR}"
 
 echo
-echo "==> [1/3] Building the React front end (vite build)..."
+echo "==> [1/3] Building the @@FE_LABEL@@ front end (static build)..."
 ( cd web && npm ci --no-audit --no-fund && npm run build )
 
 echo
-echo "==> [2/3] Installing the API's production dependencies..."
-( cd api && npm ci --omit=dev --no-audit --no-fund )
+echo "==> [2/3] Preparing the @@BE_LABEL@@ API (@@BE_ARTIFACT@@)..."
+(
+  cd api
+  @@BE_BUILD@@
+)
 
 echo
 echo "==> [3/3] Assembling the release bundle..."
 rm -rf release release.tgz
 mkdir -p release/api
-cp -R api/index.js api/package.json api/package-lock.json api/node_modules release/api/
+@@BE_PACKAGE@@
 cp -R web/dist release/web
 if [ -n "${RELEASE_NOTES:-}" ]; then
   printf '%s\n' "${RELEASE_NOTES}" > release/RELEASE_NOTES.txt
@@ -405,6 +443,7 @@ echo "    Built release.tgz:"
 ls -lh release.tgz
 echo "    Bundle layout:"
 ( cd release && find . -maxdepth 2 -type d | sort )
+echo "    On the target, the API would start with: @@BE_START@@"
 
 echo
 echo "--------------------------------------------------"
@@ -431,8 +470,107 @@ echo "--------------------------------------------------"
 echo "Done."
 SH
 
-  # Substitute the app directory and make the script executable.
-  sed -i "s#@@APP_DIR@@#${REPO_ROOT}/${combo}#g" "$pdir/deploy.sh"
+  sed -i \
+    -e "s#@@APP_DIR@@#${REPO_ROOT}/${combo}#g" \
+    -e "s#@@BE_LABEL@@#${BE_LABEL[$be]}#g" \
+    -e "s#@@FE_LABEL@@#${FE_LABEL[$fe]}#g" \
+    -e "s#@@BE_ARTIFACT@@#${BE_DEPLOY_ARTIFACT[$be]}#g" \
+    -e "s#@@BE_BUILD@@#${BE_DEPLOY_BUILD[$be]}#g" \
+    -e "s#@@BE_PACKAGE@@#${BE_DEPLOY_PACKAGE[$be]}#g" \
+    -e "s#@@BE_START@@#${BE_DEPLOY_START[$be]}#g" \
+    "$pdir/deploy.sh"
+  chmod +x "$pdir/deploy.sh"
+}
+
+# render_single_dir_deploy_profile DEST COMBO ARTIFACT START
+# Deploy profile for the single-directory combos (static, php-html): there is no
+# api/web split, so the "release" is simply the app's own files (everything that
+# isn't CoderFlow env metadata). No build step.
+render_single_dir_deploy_profile() {
+  local dest="$1" combo="$2" artifact="$3" start="$4"
+  local pdir="$dest/deployment-profiles"
+  mkdir -p "$pdir"
+  emit_deploy_json "$pdir"
+
+  cat > "$pdir/deploy.sh" <<'SH'
+#!/usr/bin/env bash
+#
+# Reference Deploy Profile — @@ARTIFACT@@
+# WHAT THIS SHOWS
+#   How a CoderFlow Deploy Profile runs: in a container built from THIS
+#   environment's image, with the repo cloned into /workspace, receiving each
+#   profile parameter as an environment variable (TARGET, DRY_RUN, RELEASE_NOTES).
+#
+# WHAT IT REALLY DOES
+#   Packages this app's deployable files into release.tgz.
+#
+# WHAT IT DELIBERATELY DOES NOT DO
+#   It does not push anywhere. This reference environment has no real QA/Prod host
+#   or credentials, so the upload is a clearly-labelled placeholder. To make it
+#   real, add the host + an SSH key as environment Secrets (available_for:
+#   ["deploy"]) and fill in the marked block.
+set -euo pipefail
+
+APP_DIR="@@APP_DIR@@"
+TARGET="${TARGET:-qa}"
+DRY_RUN="${DRY_RUN:-true}"
+
+echo "=================================================="
+echo " CoderFlow reference deploy — @@ARTIFACT@@"
+echo "   Target:   ${TARGET}"
+echo "   Dry run:  ${DRY_RUN}"
+echo "=================================================="
+
+cd "${APP_DIR}"
+
+echo
+echo "==> [1/2] Assembling the release bundle (@@ARTIFACT@@)..."
+rm -rf release release.tgz
+mkdir -p release
+for f in *; do
+  case "$f" in
+    environment.json|AGENTS.md|README.md|deployment-profiles|release|release.tgz) continue ;;
+  esac
+  cp -R "$f" release/
+done
+if [ -n "${RELEASE_NOTES:-}" ]; then
+  printf '%s\n' "${RELEASE_NOTES}" > release/RELEASE_NOTES.txt
+fi
+tar -czf release.tgz -C release .
+echo "    Built release.tgz:"
+ls -lh release.tgz
+echo "    On the target, serve it with: @@START@@"
+
+echo
+echo "--------------------------------------------------"
+if [ "${DRY_RUN}" = "true" ]; then
+  echo " DRY RUN — release built, upload to '${TARGET}' skipped."
+  echo " A real deploy would now run the command below."
+else
+  echo " DEPLOY to '${TARGET}' — placeholder: this reference environment has no"
+  echo " host configured, so there is nothing to upload to. The command a real"
+  echo " deploy would run:"
+fi
+cat <<'PLACEHOLDER'
+
+    # Ship release.tgz to the target host over SSH. Provide DEPLOY_HOST, DEPLOY_USER,
+    # and an SSH key as environment Secrets (available_for: ["deploy"]), then
+    # replace this block with:
+    #
+    #   scp release.tgz "${DEPLOY_USER}@${DEPLOY_HOST}:/var/www/app/"
+    #   ssh "${DEPLOY_USER}@${DEPLOY_HOST}" \
+    #     'cd /var/www/app && tar -xzf release.tgz'
+
+PLACEHOLDER
+echo "--------------------------------------------------"
+echo "Done."
+SH
+
+  sed -i \
+    -e "s#@@APP_DIR@@#${REPO_ROOT}/${combo}#g" \
+    -e "s#@@ARTIFACT@@#${artifact}#g" \
+    -e "s#@@START@@#${start}#g" \
+    "$pdir/deploy.sh"
   chmod +x "$pdir/deploy.sh"
 }
 
@@ -450,7 +588,7 @@ render_static() {
   # so reload the preview when a task finishes instead of forcing a manual refresh.
   emit_env_json "$dest/environment.json" "coderflow-ref-static" "$desc" \
     "" "" "Static" "$start" "$ports_json" "$launch_json" \
-    '{"auto_refresh_on_complete":true,"refresh_delay_ms":1000}'
+    '{"auto_refresh_on_complete":true,"refresh_delay_ms":1000}' '["deploy"]'
 
   cat > "$dest/AGENTS.md" <<'MD'
 # static — plain HTML/CSS/JS reference app
@@ -472,7 +610,9 @@ files — edit and refresh, nothing to restart. Don't start your own server
 process: anything you launch is torn down when your session ends.
 MD
 
-  log "static (environment.json + AGENTS.md)"
+  render_single_dir_deploy_profile "$dest" "static" "static site (HTML/CSS/JS)" "python3 -m http.server 8000 --bind 0.0.0.0"
+
+  log "static (environment.json + AGENTS.md + deploy profile)"
 }
 
 # php-html is the single-origin example: one PHP process serves the page and the
@@ -493,7 +633,7 @@ render_php_html() {
   # reload, so reload the preview when a task finishes instead of a manual refresh.
   emit_env_json "$dest/environment.json" "coderflow-ref-php-html" "$desc" \
     "$preclone" "" "PHP" "$start" "$ports_json" "$launch_json" \
-    '{"auto_refresh_on_complete":true,"refresh_delay_ms":1000}'
+    '{"auto_refresh_on_complete":true,"refresh_delay_ms":1000}' '["deploy"]'
 
   cat > "$dest/README.md" <<'MD'
 # php-html — PHP (single-origin)
@@ -568,6 +708,8 @@ re-reads your `.php` files on each request — edit and refresh, nothing to
 restart. Don't start your own server process: anything you launch is torn down
 when your session ends, and the preview would then go down.
 MD
+
+  render_single_dir_deploy_profile "$dest" "php-html" "PHP single-origin app (source)" "php -S 0.0.0.0:8000 router.php"
 
   log "php-html (single-origin)"
 }

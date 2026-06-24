@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Reference Deploy Profile — Node.js + React
+# Reference Deploy Profile — Node.js + Angular
 # WHAT THIS SHOWS
 #   How a CoderFlow Deploy Profile runs: in a container built from THIS
 #   environment's image, with the repo cloned into /workspace, receiving each
@@ -8,7 +8,7 @@
 #
 # WHAT IT REALLY DOES
 #   Builds a genuine, deployable release artifact from the cloned source: the
-#   React front end (static build) plus the Node.js API
+#   Angular front end (static build) plus the Node.js API
 #   (index.js + production node_modules), assembled into release.tgz.
 #
 # WHAT IT DELIBERATELY DOES NOT DO
@@ -18,12 +18,12 @@
 #   Secrets (available_for: ["deploy"]) and fill in the marked block.
 set -euo pipefail
 
-APP_DIR="/workspace/coderflow-reference-apps/node-react"
+APP_DIR="/workspace/coderflow-reference-apps/node-angular"
 TARGET="${TARGET:-qa}"
 DRY_RUN="${DRY_RUN:-true}"
 
 echo "=================================================="
-echo " CoderFlow reference deploy — Node.js + React"
+echo " CoderFlow reference deploy — Node.js + Angular"
 echo "   Target:   ${TARGET}"
 echo "   Dry run:  ${DRY_RUN}"
 echo "=================================================="
@@ -31,7 +31,7 @@ echo "=================================================="
 cd "${APP_DIR}"
 
 echo
-echo "==> [1/3] Building the React front end (static build)..."
+echo "==> [1/3] Building the Angular front end (static build)..."
 ( cd web && npm ci --no-audit --no-fund && npm run build )
 
 echo

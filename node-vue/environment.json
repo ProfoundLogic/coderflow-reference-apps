@@ -34,7 +34,7 @@
         "description": "Node.js + Vue front end"
       }
     ],
-    "start_command": "cd /workspace/coderflow-reference-apps/node-vue/api && npm start &\ncd /workspace/coderflow-reference-apps/node-vue/web && npm run dev"
+    "start_command": "cd /workspace/coderflow-reference-apps/node-vue/api && node --watch index.js &\ncd /workspace/coderflow-reference-apps/node-vue/web && npm run dev"
   },
   "standardInstructions": {
     "outputRequirements": true

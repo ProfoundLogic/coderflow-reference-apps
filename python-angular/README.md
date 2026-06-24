@@ -28,7 +28,7 @@ cd api && pip install -r requirements.txt
 cd web && npm install
 
 # 2. start the API (terminal 1)
-cd api && uvicorn main:app --host 0.0.0.0 --port 3001
+cd api && uvicorn main:app --host 0.0.0.0 --port 3001 --reload
 
 # 3. start the front end (terminal 2)
 cd web && npm start

@@ -24,6 +24,15 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <!-- DevTools: when running via `mvn spring-boot:run`, the app auto-restarts
+             whenever target/classes changes. Edit a source file, run `mvn -q -o
+             compile`, and the running API restarts in place (no manual restart). -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <build>

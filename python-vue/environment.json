@@ -34,7 +34,7 @@
         "description": "Python + Vue front end"
       }
     ],
-    "start_command": "cd /workspace/coderflow-reference-apps/python-vue/api && uvicorn main:app --host 0.0.0.0 --port 3001 &\ncd /workspace/coderflow-reference-apps/python-vue/web && npm run dev"
+    "start_command": "cd /workspace/coderflow-reference-apps/python-vue/api && uvicorn main:app --host 0.0.0.0 --port 3001 --reload &\ncd /workspace/coderflow-reference-apps/python-vue/web && npm run dev"
   },
   "standardInstructions": {
     "outputRequirements": true

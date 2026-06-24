@@ -38,7 +38,7 @@
         "description": ".NET + React front end"
       }
     ],
-    "start_command": "cd /workspace/coderflow-reference-apps/dotnet-react/api && dotnet run &\ncd /workspace/coderflow-reference-apps/dotnet-react/web && npm run dev"
+    "start_command": "cd /workspace/coderflow-reference-apps/dotnet-react/api && dotnet watch run &\ncd /workspace/coderflow-reference-apps/dotnet-react/web && npm run dev"
   },
   "standardInstructions": {
     "outputRequirements": true

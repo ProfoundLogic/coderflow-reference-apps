@@ -34,7 +34,7 @@
         "description": "Node.js + Angular front end"
       }
     ],
-    "start_command": "cd /workspace/coderflow-reference-apps/node-angular/api && npm start &\ncd /workspace/coderflow-reference-apps/node-angular/web && npm start"
+    "start_command": "cd /workspace/coderflow-reference-apps/node-angular/api && node --watch index.js &\ncd /workspace/coderflow-reference-apps/node-angular/web && npm start"
   },
   "standardInstructions": {
     "outputRequirements": true

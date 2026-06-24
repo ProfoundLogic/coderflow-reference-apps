@@ -38,7 +38,7 @@
         "description": ".NET + Vue front end"
       }
     ],
-    "start_command": "cd /workspace/coderflow-reference-apps/dotnet-vue/api && dotnet run &\ncd /workspace/coderflow-reference-apps/dotnet-vue/web && npm run dev"
+    "start_command": "cd /workspace/coderflow-reference-apps/dotnet-vue/api && dotnet watch run &\ncd /workspace/coderflow-reference-apps/dotnet-vue/web && npm run dev"
   },
   "standardInstructions": {
     "outputRequirements": true

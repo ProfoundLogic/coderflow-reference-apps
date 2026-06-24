@@ -34,7 +34,7 @@
         "description": "Node.js + React front end"
       }
     ],
-    "start_command": "cd /workspace/coderflow-reference-apps/node-react/api && npm start &\ncd /workspace/coderflow-reference-apps/node-react/web && npm run dev"
+    "start_command": "cd /workspace/coderflow-reference-apps/node-react/api && node --watch index.js &\ncd /workspace/coderflow-reference-apps/node-react/web && npm run dev"
   },
   "standardInstructions": {
     "outputRequirements": true

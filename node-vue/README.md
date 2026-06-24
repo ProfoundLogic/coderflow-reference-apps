@@ -28,7 +28,7 @@ cd api && npm install
 cd web && npm install
 
 # 2. start the API (terminal 1)
-cd api && npm start
+cd api && node --watch index.js
 
 # 3. start the front end (terminal 2)
 cd web && npm run dev

@@ -62,13 +62,25 @@ declare -A BE_RESTORE=(
   [python]="pip install -r requirements.txt"
   [php]=""
 )
-# Start the backend API on 0.0.0.0:3001 (bare command, run in api/).
+# Start the backend API on 0.0.0.0:3001 in watch/reload mode (bare command, run
+# in api/), so the managed app server reloads on code changes — the agent never
+# has to kill and restart it. PHP's built-in server already re-reads per request.
 declare -A BE_RUN=(
-  [node]="npm start"
-  [dotnet]="dotnet run"
+  [node]="node --watch index.js"
+  [dotnet]="dotnet watch run"
   [java]="mvn -q spring-boot:run"
-  [python]="uvicorn main:app --host 0.0.0.0 --port 3001"
+  [python]="uvicorn main:app --host 0.0.0.0 --port 3001 --reload"
   [php]="php -S 0.0.0.0:3001 router.php"
+)
+
+# How each backend picks up a code change (used in AGENTS.md). The phrasing is
+# per-stack because Java needs an explicit recompile to trigger the restart.
+declare -A BE_RELOAD_NOTE=(
+  [node]="the API runs under \`node --watch\`, so saving a backend file restarts it automatically."
+  [dotnet]="the API runs under \`dotnet watch\`, so saving a backend file rebuilds and restarts it automatically."
+  [java]="the API runs with Spring DevTools. After editing a backend file, run \`mvn -q -o compile\` in \`api/\` and DevTools restarts the running API in place — don't kill and re-run it yourself."
+  [python]="the API runs under \`uvicorn --reload\`, so saving a backend file restarts it automatically."
+  [php]="the PHP built-in server re-reads files per request, so backend changes show on the next request — no restart needed."
 )
 # Pre-clone runtime install (raw Dockerfile). Empty = already in the base image
 # (Node.js and Python are; .NET/Java/PHP are installed here).
@@ -234,6 +246,28 @@ API in the background, then the front-end dev server. The page shows
   \`/api/...\` paths; don't hardcode the API origin or port.
 - The API binds the port from the PORT env var (default 3001); the dev-server
   proxy targets \`http://localhost:3001\`.
+
+## Applying changes
+
+The application server (API + front-end dev server) is started and kept alive by
+CoderFlow — it serves the live preview. **Don't kill it or start your own copy.**
+
+- **Front-end** edits (in \`web/src/\`) hot-reload automatically — just save.
+- **Back-end** edits: ${BE_RELOAD_NOTE[$be]}
+- The front end re-fetches \`/api/hello\` on load, so after a back-end change the
+  new value appears on the next browser refresh.
+
+## Process lifecycle (important)
+
+Any process you start runs only for the current session — it is **torn down when
+the session ends**, and the preview will then show "Could not reach the API."
+Never start a long-running server as a plain background job (\`… &\`); rely on the
+managed app server's reload above instead. If you ever truly must run a durable
+process yourself, fully detach it so it outlives your session:
+
+\`\`\`sh
+setsid nohup <command> > /tmp/server.log 2>&1 < /dev/null & disown
+\`\`\`
 MD
 
   log "$combo"
@@ -264,6 +298,12 @@ A minimal **static site** with no backend: plain HTML/CSS/JS served on port 8000
 ## Working here
 
 - There's no backend and no build step — edit the files and refresh to see changes.
+
+## Process lifecycle
+
+The static server is started and kept alive by CoderFlow and serves the current
+files — edit and refresh, nothing to restart. Don't start your own server
+process: anything you launch is torn down when your session ends.
 MD
 
   log "static (environment.json + AGENTS.md)"
@@ -351,6 +391,13 @@ and the API on **one port** (8000) — no front-end build, no proxy, no CORS.
 
 - It's single-origin: the page and API share one port, so fetch relative `/api/...` paths — there's no proxy and no CORS to configure.
 - Server-rendered PHP: there's no build step. Edit a `.php` file and refresh.
+
+## Process lifecycle
+
+The application server (`php -S`) is started and kept alive by CoderFlow and
+re-reads your `.php` files on each request — edit and refresh, nothing to
+restart. Don't start your own server process: anything you launch is torn down
+when your session ends, and the preview would then go down.
 MD
 
   log "php-html (single-origin)"

@@ -28,7 +28,7 @@ cd api && dotnet restore
 cd web && npm install
 
 # 2. start the API (terminal 1)
-cd api && dotnet run
+cd api && dotnet watch run
 
 # 3. start the front end (terminal 2)
 cd web && npm run dev

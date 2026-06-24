@@ -38,7 +38,7 @@
         "description": ".NET + Angular front end"
       }
     ],
-    "start_command": "cd /workspace/coderflow-reference-apps/dotnet-angular/api && dotnet run &\ncd /workspace/coderflow-reference-apps/dotnet-angular/web && npm start"
+    "start_command": "cd /workspace/coderflow-reference-apps/dotnet-angular/api && dotnet watch run &\ncd /workspace/coderflow-reference-apps/dotnet-angular/web && npm start"
   },
   "standardInstructions": {
     "outputRequirements": true

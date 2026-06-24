@@ -9,7 +9,7 @@
       "branch": "main",
       "allow_branch_selection": true,
       "clone_auto": true,
-      "post_clone_action": "cd /workspace/coderflow-reference-apps/python-angular/api && pip install -r requirements.txt\ncd /workspace/coderflow-reference-apps/python-angular/web && npm install"
+      "post_clone_action": "cd /workspace/coderflow-reference-apps/python-angular/api && pip install --break-system-packages -r requirements.txt\ncd /workspace/coderflow-reference-apps/python-angular/web && npm install"
     }
   ],
   "application_server": {

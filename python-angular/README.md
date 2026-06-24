@@ -24,7 +24,7 @@ To run outside CoderFlow, install **Python 3.11 (pip)** and **Node.js** (for the
 
 ```sh
 # 1. install dependencies
-cd api && pip install -r requirements.txt
+cd api && pip install --break-system-packages -r requirements.txt
 cd web && npm install
 
 # 2. start the API (terminal 1)

@@ -59,7 +59,10 @@ declare -A BE_RESTORE=(
   [node]="npm install"
   [dotnet]="dotnet restore"
   [java]="mvn -q -DskipTests package"
-  [python]="pip install -r requirements.txt"
+  # --break-system-packages: the base image's Python is PEP 668 "externally
+  # managed", which blocks a system-wide pip install. Safe in a disposable
+  # container; locally you'd use a virtualenv instead.
+  [python]="pip install --break-system-packages -r requirements.txt"
   [php]=""
 )
 # Start the backend API on 0.0.0.0:3001 in watch/reload mode (bare command, run

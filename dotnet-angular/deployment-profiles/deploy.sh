@@ -38,7 +38,7 @@ echo
 echo "==> [2/3] Preparing the .NET API (framework-dependent publish output)..."
 (
   cd api
-  dotnet publish -c Release -o publish
+  DOTNET_NOLOGO=1 DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_GENERATE_ASPNET_CERTIFICATE=false dotnet publish -c Release -o publish
 )
 
 echo

@@ -104,7 +104,7 @@ declare -A BE_PRECLONE=(
 #   START   how the API would be started on the target (shown in the log).
 declare -A BE_DEPLOY_BUILD=(
   [node]="npm ci --omit=dev --no-audit --no-fund"
-  [dotnet]="dotnet publish -c Release -o publish"
+  [dotnet]="DOTNET_NOLOGO=1 DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_GENERATE_ASPNET_CERTIFICATE=false dotnet publish -c Release -o publish"
   [java]="mvn -q -DskipTests package"
   [python]="pip install --break-system-packages -r requirements.txt -t vendor"
   [php]="echo '    (PHP runs from source - nothing to build)'"

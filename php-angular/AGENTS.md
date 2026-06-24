@@ -6,7 +6,7 @@ end — that fetches and displays `GET /api/hello`.
 ## Layout (under `coderflow-reference-apps/php-angular/`)
 
 - `api/` — PHP backend. Serves `GET /api/hello` → `{"message":"Hello from the PHP API!"}` on `0.0.0.0:3001`.
-- `web/` — Angular front end. Dev server on port 4200; proxies `/api` to the API.
+- `web/` — Angular front end (source in `web/src/`). Renders a title, the API message, and a **Reload from API** button; dev server on port 4200, proxies `/api` to the API.
 
 These run as **two processes** (already configured as the application server): the
 API in the background, then the front-end dev server. The page shows

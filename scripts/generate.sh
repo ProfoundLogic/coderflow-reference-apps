@@ -176,7 +176,7 @@ Minimal hello-world: a **${be_label}** API serving \`GET /api/hello\`, and the
 ## Layout
 
 - \`api/\` — ${be_label} backend. Serves \`GET /api/hello\` → \`{"message":"Hello from the ${be_label} API!"}\` on \`0.0.0.0:3001\`.
-- \`web/\` — ${fe_label} front end. Dev server proxies \`/api\` → \`http://localhost:3001\`.
+- \`web/\` — ${fe_label} front end (source in \`web/src/\`). Renders a title, the API's message, and a **Reload from API** button. Dev server proxies \`/api\` → \`http://localhost:3001\`.
 - \`environment.json\` — an importable CoderFlow environment, **preconfigured to launch**: the pre-clone runtime install, post-clone dependency install, and both application servers are already set.
 
 ## In CoderFlow (import and launch)
@@ -204,8 +204,10 @@ ${be_start_line}
 ${fe_start_line}
 \`\`\`
 
-Open the front end at \`http://localhost:${fe_port}\`. It shows
-"Hello from the ${be_label} API!", fetched through the dev-server proxy.
+Open the front end at \`http://localhost:${fe_port}\`. The page renders a title
+from ${fe_label}, the API's message ("Hello from the ${be_label} API!") fetched
+through the dev-server proxy, and a **Reload from API** button. Edit the
+front-end text in \`web/src/\` and save to see live reload.
 MD
 
   # AGENTS.md — per-environment custom instructions, delivered to the agent as
@@ -219,7 +221,7 @@ end — that fetches and displays \`GET /api/hello\`.
 ## Layout (under \`coderflow-reference-apps/${combo}/\`)
 
 - \`api/\` — ${be_label} backend. Serves \`GET /api/hello\` → \`{"message":"Hello from the ${be_label} API!"}\` on \`0.0.0.0:3001\`.
-- \`web/\` — ${fe_label} front end. Dev server on port ${fe_port}; proxies \`/api\` to the API.
+- \`web/\` — ${fe_label} front end (source in \`web/src/\`). Renders a title, the API message, and a **Reload from API** button; dev server on port ${fe_port}, proxies \`/api\` to the API.
 
 These run as **two processes** (already configured as the application server): the
 API in the background, then the front-end dev server. The page shows

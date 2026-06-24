@@ -1,1 +1,16 @@
-<h1>{{ message() }}</h1>
+<main>
+  <!-- This text is rendered by Angular. Edit it, save, and the browser live-reloads. -->
+  <h1>CoderFlow reference app</h1>
+  <p class="framework">Front end: <strong>Angular</strong></p>
+
+  <p class="label">Message from the API</p>
+  @if (loading()) {
+    <p class="api-message">Loading…</p>
+  } @else if (error()) {
+    <p class="api-message">Could not reach the API</p>
+  } @else {
+    <p class="api-message">{{ message() }}</p>
+  }
+
+  <button (click)="reload()" [disabled]="loading()">Reload from API</button>
+</main>

@@ -6,7 +6,7 @@ Minimal hello-world: a **Node.js** API serving `GET /api/hello`, and the
 ## Layout
 
 - `api/` — Node.js backend. Serves `GET /api/hello` → `{"message":"Hello from the Node.js API!"}` on `0.0.0.0:3001`.
-- `web/` — Angular front end. Dev server proxies `/api` → `http://localhost:3001`.
+- `web/` — Angular front end (source in `web/src/`). Renders a title, the API's message, and a **Reload from API** button. Dev server proxies `/api` → `http://localhost:3001`.
 - `environment.json` — an importable CoderFlow environment, **preconfigured to launch**: the pre-clone runtime install, post-clone dependency install, and both application servers are already set.
 
 ## In CoderFlow (import and launch)
@@ -34,5 +34,7 @@ cd api && npm start
 cd web && npm start
 ```
 
-Open the front end at `http://localhost:4200`. It shows
-"Hello from the Node.js API!", fetched through the dev-server proxy.
+Open the front end at `http://localhost:4200`. The page renders a title
+from Angular, the API's message ("Hello from the Node.js API!") fetched
+through the dev-server proxy, and a **Reload from API** button. Edit the
+front-end text in `web/src/` and save to see live reload.

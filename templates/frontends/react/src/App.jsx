@@ -5,7 +5,10 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  useEffect(() => {
+  // Re-fetch the API message without reloading the page (the SPA model).
+  function reload() {
+    setLoading(true);
+    setError(false);
     fetch('/api/hello')
       .then((res) => {
         if (!res.ok) throw new Error(`Request failed: ${res.status}`);
@@ -19,14 +22,24 @@ export default function App() {
         setError(true);
         setLoading(false);
       });
+  }
+
+  useEffect(() => {
+    reload();
   }, []);
 
   return (
     <main>
-      {loading && <p>Loading…</p>}
-      {error && <h1>Could not reach the API</h1>}
-      {!loading && !error && <h1>{message}</h1>}
-      <p>React + Vite client</p>
+      {/* This text is rendered by React. Edit it, save, and the browser live-reloads. */}
+      <h1>CoderFlow reference app</h1>
+      <p className="framework">Front end: <strong>React</strong></p>
+
+      <p className="label">Message from the API</p>
+      <p className="api-message">
+        {loading ? 'Loading…' : error ? 'Could not reach the API' : message}
+      </p>
+
+      <button onClick={reload} disabled={loading}>Reload from API</button>
     </main>
   );
 }

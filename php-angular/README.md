@@ -6,7 +6,7 @@ Minimal hello-world: a **PHP** API serving `GET /api/hello`, and the
 ## Layout
 
 - `api/` — PHP backend. Serves `GET /api/hello` → `{"message":"Hello from the PHP API!"}` on `0.0.0.0:3001`.
-- `web/` — Angular front end. Dev server proxies `/api` → `http://localhost:3001`.
+- `web/` — Angular front end (source in `web/src/`). Renders a title, the API's message, and a **Reload from API** button. Dev server proxies `/api` → `http://localhost:3001`.
 - `environment.json` — an importable CoderFlow environment, **preconfigured to launch**: the pre-clone runtime install, post-clone dependency install, and both application servers are already set.
 
 ## In CoderFlow (import and launch)
@@ -34,5 +34,7 @@ cd api && php -S 0.0.0.0:3001 router.php
 cd web && npm start
 ```
 
-Open the front end at `http://localhost:4200`. It shows
-"Hello from the PHP API!", fetched through the dev-server proxy.
+Open the front end at `http://localhost:4200`. The page renders a title
+from Angular, the API's message ("Hello from the PHP API!") fetched
+through the dev-server proxy, and a **Reload from API** button. Edit the
+front-end text in `web/src/` and save to see live reload.

@@ -14,13 +14,13 @@ Minimal hello-world: a **.NET** API serving `GET /api/hello`, and the
 This environment is preconfigured — there's nothing to wire up by hand:
 
 1. **Import Environment → Git repository**, paste this repo's URL, **Load environments**, pick `dotnet-angular`, **Import**.
-2. Build and launch it. The pre-clone script installs **.NET 8 SDK**, the post-clone action installs dependencies, and the application server starts the API (port 3001) and the Angular dev server (port 4200).
+2. Build and launch it. The pre-clone script installs **.NET 10 SDK**, the post-clone action installs dependencies, and the application server starts the API (port 3001) and the Angular dev server (port 4200).
 
 Open the launch URL — it shows "Hello from the .NET API!", fetched through the dev-server proxy.
 
 ## Run it locally (two processes)
 
-To run outside CoderFlow, install **.NET 8 SDK** and **Node.js** (for the front end), then:
+To run outside CoderFlow, install **.NET 10 SDK** and **Node.js** (for the front end), then:
 
 ```sh
 # 1. install dependencies

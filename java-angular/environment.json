@@ -3,7 +3,7 @@
   "default_agent": "claude",
   "description": "Reference environment — Java API + Angular front end (two-process), preconfigured to import and launch. Clones coderflow-reference-apps and runs the java-angular app.",
   "docker_config": {
-    "pre_clone_instructions": "RUN apt-get update && apt-get install -y default-jdk maven && rm -rf /var/lib/apt/lists/*",
+    "pre_clone_instructions": "RUN apt-get update && apt-get install -y wget gnupg ca-certificates apt-transport-https && mkdir -p /etc/apt/keyrings && wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | gpg --dearmor -o /etc/apt/keyrings/adoptium.gpg && echo \"deb [signed-by=/etc/apt/keyrings/adoptium.gpg] https://packages.adoptium.net/artifactory/deb $(. /etc/os-release && echo $VERSION_CODENAME) main\" > /etc/apt/sources.list.d/adoptium.list && apt-get update && apt-get install -y temurin-21-jdk maven && rm -rf /var/lib/apt/lists/*\nENV JAVA_HOME=/usr/lib/jvm/temurin-21-jdk-amd64",
     "post_clone_instructions": ""
   },
   "repos": [

@@ -47,11 +47,11 @@ command -v jq >/dev/null 2>&1 || { echo "error: jq is required" >&2; exit 1; }
 declare -A BE_DIR=( [node]=node [dotnet]=dotnet [java]=java [python]=python [php]=php )
 declare -A BE_LABEL=( [node]="Node.js" [dotnet]=".NET" [java]="Java" [python]="Python" [php]="PHP" )
 declare -A BE_RUNTIME=(
-  [node]="Node.js 20 (npm)"
-  [dotnet]=".NET 8 SDK"
-  [java]="JDK 17 + Maven"
-  [python]="Python 3.11 (pip)"
-  [php]="PHP 8.2"
+  [node]="Node.js 24 (npm)"
+  [dotnet]=".NET 10 SDK"
+  [java]="JDK 21 (Temurin) + Maven"
+  [python]="Python 3 (pip)"
+  [php]="PHP 8.x (php-cli)"
 )
 # Restore/build the backend's dependencies (bare command, run in api/).
 # Empty = nothing to build (PHP runs from source).
@@ -90,8 +90,11 @@ declare -A BE_RELOAD_NOTE=(
 declare -A BE_PRECLONE=(
   [node]=""
   [python]=""
-  [dotnet]=$'RUN curl -fsSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh && bash /tmp/dotnet-install.sh --channel 8.0 --install-dir /usr/local/dotnet && ln -sf /usr/local/dotnet/dotnet /usr/local/bin/dotnet && rm /tmp/dotnet-install.sh\nENV DOTNET_ROOT=/usr/local/dotnet'
-  [java]="RUN apt-get update && apt-get install -y default-jdk maven && rm -rf /var/lib/apt/lists/*"
+  [dotnet]=$'RUN curl -fsSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh && bash /tmp/dotnet-install.sh --channel 10.0 --install-dir /usr/local/dotnet && ln -sf /usr/local/dotnet/dotnet /usr/local/bin/dotnet && rm /tmp/dotnet-install.sh\nENV DOTNET_ROOT=/usr/local/dotnet'
+  # Pin Java 21 (LTS) via the Adoptium Temurin apt repo, independent of the base
+  # image's default-jdk. JAVA_HOME makes the Spring Boot Maven plugin use it even
+  # if `maven` pulls a different JRE as a dependency.
+  [java]=$'RUN apt-get update && apt-get install -y wget gnupg ca-certificates apt-transport-https && mkdir -p /etc/apt/keyrings && wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | gpg --dearmor -o /etc/apt/keyrings/adoptium.gpg && echo "deb [signed-by=/etc/apt/keyrings/adoptium.gpg] https://packages.adoptium.net/artifactory/deb $(. /etc/os-release && echo $VERSION_CODENAME) main" > /etc/apt/sources.list.d/adoptium.list && apt-get update && apt-get install -y temurin-21-jdk maven && rm -rf /var/lib/apt/lists/*\nENV JAVA_HOME=/usr/lib/jvm/temurin-21-jdk-amd64'
   [php]="RUN apt-get update && apt-get install -y php-cli && rm -rf /var/lib/apt/lists/*"
 )
 

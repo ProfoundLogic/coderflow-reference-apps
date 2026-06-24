@@ -3,7 +3,7 @@
   "default_agent": "claude",
   "description": "Reference environment — .NET API + Vue front end (two-process), preconfigured to import and launch. Clones coderflow-reference-apps and runs the dotnet-vue app.",
   "docker_config": {
-    "pre_clone_instructions": "RUN curl -fsSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh && bash /tmp/dotnet-install.sh --channel 8.0 --install-dir /usr/local/dotnet && ln -sf /usr/local/dotnet/dotnet /usr/local/bin/dotnet && rm /tmp/dotnet-install.sh\nENV DOTNET_ROOT=/usr/local/dotnet",
+    "pre_clone_instructions": "RUN curl -fsSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh && bash /tmp/dotnet-install.sh --channel 10.0 --install-dir /usr/local/dotnet && ln -sf /usr/local/dotnet/dotnet /usr/local/bin/dotnet && rm /tmp/dotnet-install.sh\nENV DOTNET_ROOT=/usr/local/dotnet",
     "post_clone_instructions": ""
   },
   "repos": [

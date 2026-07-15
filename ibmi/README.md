@@ -15,30 +15,38 @@ The base environment is installed on IBM i from a save file, and used by all age
 - A task environment library is automatically created on IBM i by agentic coding tools running off platform.
 Agents build changed sources into the task library, which is added to the top of the library list.
 
-## Installing the Base Environment
+## Setup
 
-- Visit the
-  [Releases](https://github.com/ProfoundLogic/coderflow-reference-apps/releases)
-  page and find the latest **`ibmi/`** release (e.g. `ibmi/v1.0.0`) to download
-  the save file (`cfdemo.savf`). Releases of other apps in this repo use
-  different tag prefixes.
-- Transfer the save file to your IBM i system.
-- Create a new library for the base environment and use it only for this
-  purpose. The suggested library name is `CFDEMO`, but you may use a different
-  name if that is already in use on your system.
-- Restore all of the objects in the save file to the base environment library.
+- See the 
+  [setup guide](https://coderflow.ai/docs/ibmi/reference-app)
+  for instructions on importing this example setup into CoderFlow.
 
-## Agentic Coding Tasks
+## Example Task Prompts
 
-Coding agents such as Claude Code or Codex can be used with this app from a Linux
-system or container. To build from Linux, these environment variables must be
-set:
+### Hello World
 
-- `IBMI_BUILD_LIBRARY`: A unique library name for the agentic coding work.
-- `IBMI_HOST`: IBM i host name for building.
-- `IBMI_USER`: IBM i user profile name for building. **Use a generic and non-privileged user profile for this. DO NOT use your normal human user profile.**
-- `IBMI_KEY`: Optional. Path to SSH private key file that can authenticate as above user. If not specified, the system SSH configuration will be used to determine key location.
-- `IBMI_PASSWORD`: Password for above user profile. Required for DB connectivity and Genie.
-- `IBMI_PUI_SERVER`: PUI/Genie server URL for agent sessions. e.g. `http://myibmi:8080`
+```
+Complete the Hello World program by outputting a message to the screen based on the user input. Add an option to the menu to launch the program.
+```
 
-Then run `codermake` from within this `ibmi` directory to build.
+### Real Programming Task w/Multiple Dependencies
+
+```
+Extend the "work with customers" program to add a new option "2=Edit". This option will call the "work with customers - detail" program in edit mode and allow the user to edit the customer and update the DB. The record should be updated when the user presses Enter.
+```
+
+### Generate New Application w/Multiple Dependencies
+
+```
+Explore the database tables to learn about the structure, then add a Work with Orders application:
+
+The application should have a subfile list similar to the Work with Customers application.
+The subfile should have a 5=Display option to view the order header.
+Add an option to the menu to launch the application.
+```
+
+### Menu Modification
+
+```
+Add an option to the menu to launch the Hello World example program.
+```

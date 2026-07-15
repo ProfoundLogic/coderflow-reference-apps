@@ -56,9 +56,21 @@
     "title": "Finish setting up IBM i",
     "steps": [
       {
+        "id": "set-up-repository",
+        "title": "Set up your project repository",
+        "body": "Open the Repositories tab and add a new, empty repository (initialized with a default branch) for this environment to build from.",
+        "action": {
+          "type": "navigate",
+          "label": "Open the Repositories tab",
+          "config": { "tab": "repos" }
+        },
+        "docsLabel": "Full Guide",
+        "docs": "/docs/ibmi/reference-app/set-up-repository"
+      },
+      {
         "id": "configure-connection",
         "title": "Fill in the IBM i connection",
-        "body": "Open the Connections tab and add your host and a non-privileged agentic profile to the connection.",
+        "body": "Open the Connections tab, fill in the dev connection, set its build repository to your repo, and build the environment.",
         "action": {
           "type": "navigate",
           "label": "Open the Connections tab",
@@ -66,6 +78,13 @@
         },
         "docsLabel": "Full Guide",
         "docs": "/docs/ibmi/reference-app/configure-connection"
+      },
+      {
+        "id": "copy-example-source",
+        "title": "Copy in the example source",
+        "body": "Run a task to copy the example source into your repository, then detach the reference-apps repo.",
+        "docsLabel": "Full Guide",
+        "docs": "/docs/ibmi/reference-app/copy-example-source"
       },
       {
         "id": "install-base-library",
@@ -91,25 +110,6 @@
         },
         "docsLabel": "Open the manual install guide",
         "docs": "/docs/ibmi/reference-app/install-base-library"
-      },
-      {
-        "id": "populate-your-repo",
-        "title": "Set up your project repository",
-        "body": "Add your own repository and run the guided task to populate it with the example source.",
-        "docsLabel": "Full Guide",
-        "docs": "/docs/ibmi/reference-app/use-your-own-repo"
-      },
-      {
-        "id": "point-connection-at-repo",
-        "title": "Point the connection at your repo",
-        "body": "Back on the Connections tab, edit the dev connection and set its build repository to your repo.",
-        "action": {
-          "type": "navigate",
-          "label": "Open the Connections tab",
-          "config": { "tab": "connections", "connection": "dev" }
-        },
-        "docsLabel": "Full Guide",
-        "docs": "/docs/ibmi/reference-app/use-your-own-repo#point-the-connection-at-your-repo"
       }
     ]
   }

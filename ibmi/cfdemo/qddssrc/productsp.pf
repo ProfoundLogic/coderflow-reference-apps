@@ -1,0 +1,15 @@
+     A*
+     A                                      UNIQUE
+     A          R PRODUCTS
+     A*
+     A            PRID           5  0       TEXT('Product Id')
+     A            PRNAME        30          TEXT('Product Name')
+     A            PRDESC        60          TEXT('Description')
+     A            PRPRICE        7  2       TEXT('Price')
+     A            PRIMAGE       60          TEXT('Image URL')
+     A            PRQTY          5  0       TEXT('Quantity Available')
+     A            PRCATID        5  0       TEXT('Category Id')
+
+     A*
+     A          K PRID
+     A*

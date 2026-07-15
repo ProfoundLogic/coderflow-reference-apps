@@ -1,0 +1,9 @@
+{
+  "targetRelease": "V7R4M0",
+  "compileOptions": {
+    "crtbndrpg":  { "dbgview": "*all" },
+    "crtrpgmod":  { "dbgview": "*all" },
+    "crtsqlrpgi": { "dbgview": "*source" },
+    "crtbndcbl":  { "dbgview": "*all" }
+  }
+}

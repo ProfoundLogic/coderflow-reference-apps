@@ -1,0 +1,1287 @@
+{
+  "text": "",
+  "formats": [
+    {
+      "screen": {
+        "record format name": "custdetail",
+        "overlay range": "1-23",
+        "onload": "applyProperty(\"fldCustomer\", \"legend\", `Customer ${get(\"scustno\")}`);"
+      },
+      "items": [
+        {
+          "id": "custdetail_layout_hidden_fields",
+          "field type": "layout",
+          "template": "simple container",
+          "overflow x": "auto",
+          "overflow y": "auto",
+          "left": "0px",
+          "top": "0px",
+          "height": "40px",
+          "width": "40px",
+          "z index": "0",
+          "locked in place": "true",
+          "css class": "hidden",
+          "visibility": "hidden"
+        },
+        {
+          "id": "custdetail_screenlayout",
+          "field type": "layout",
+          "template": "css panel",
+          "header height": "45px",
+          "left": "25px",
+          "top": "5px",
+          "height": "725px",
+          "header theme": "pls--header",
+          "body theme": "pls--body",
+          "z index": "9",
+          "css class": "pls--panel--wide",
+          "css class 2": "info",
+          "header text": "Customer Detail"
+        },
+        {
+          "id": "Layout1",
+          "field type": "layout",
+          "css class": "pls--fieldset",
+          "left": "70px",
+          "top": "275px",
+          "template": "fieldset",
+          "width": "780px",
+          "height": "320px",
+          "legend": "Primary Contact",
+          "layout": "custdetail_screenlayout",
+          "container": "1"
+        },
+        {
+          "id": "constant1",
+          "field type": "output field",
+          "value": "Customer Detail",
+          "css class": "pls--label-right",
+          "left": "0px",
+          "cursor column": "-33",
+          "top": "40px",
+          "cursor row": "-1",
+          "css class 2": "pls--top-line",
+          "css class 3": "pls--constant",
+          "layout": "custdetail_layout_hidden_fields",
+          "container": "1"
+        },
+        {
+          "id": "sfkeys",
+          "field type": "output field",
+          "value": {
+            "fieldName": "sfkeys",
+            "designValue": "[sfkeys]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "true",
+            "trimTrailing": "true",
+            "textTransform": "none",
+            "dataLength": "512"
+          },
+          "css class": "pls--output-field pls--fkeys",
+          "left": "140px",
+          "cursor column": "-2",
+          "top": "40px",
+          "cursor row": "-23",
+          "css class 2": "BLU",
+          "css class 3": "pls--constant",
+          "layout": "custdetail_layout_hidden_fields",
+          "container": "1"
+        },
+        {
+          "id": "btnSubmit",
+          "field type": "graphic button",
+          "value": "Continue",
+          "shortcut key": "Enter",
+          "tool tip": "Enter",
+          "left": "560px",
+          "top": "40px",
+          "width": "140px",
+          "css class": "pls--button",
+          "auto arrange": "true",
+          "layout": "custdetail_layout_hidden_fields",
+          "container": "1"
+        },
+        {
+          "id": "constant2",
+          "field type": "output field",
+          "value": "Customer",
+          "css class": "pls--label-right",
+          "left": "210px",
+          "cursor column": "2",
+          "top": "160px",
+          "cursor row": "3",
+          "css class 2": "pls--constant",
+          "width": "130px",
+          "layout": "custdetail_layout_hidden_fields",
+          "container": "1"
+        },
+        {
+          "id": "scustno",
+          "field type": "output field",
+          "value": {
+            "fieldName": "scustno",
+            "designValue": "[scustno]",
+            "dataType": "zoned",
+            "formatting": "Number",
+            "numSep": "false",
+            "zeroBalance": "true",
+            "zeroFill": "true",
+            "curSym": "",
+            "units": "",
+            "negNum": "-999.00",
+            "dataLength": "6",
+            "decPos": "0"
+          },
+          "css class": "pls--output-field",
+          "left": "360px",
+          "cursor column": "11",
+          "top": "160px",
+          "cursor row": "3",
+          "width": "60px",
+          "text align": "right",
+          "css class 2": "WHT_removed",
+          "css class 3": "pls--constant",
+          "layout": "custdetail_layout_hidden_fields",
+          "container": "1"
+        },
+        {
+          "id": "constant5",
+          "field type": "output field",
+          "value": "(B=Business, R=Residential)",
+          "css class": "pls--label-right",
+          "left": "275px",
+          "cursor column": "19",
+          "top": "75px",
+          "cursor row": "6",
+          "css class 2": "pls--constant",
+          "layout": "custdetail_layout_hidden_fields",
+          "container": "1"
+        },
+        {
+          "id": "constant7",
+          "field type": "output field",
+          "value": "(A=Active, I=Inactive, S=Suspended)",
+          "css class": "pls--label-right",
+          "left": "275px",
+          "cursor column": "19",
+          "top": "115px",
+          "cursor row": "7",
+          "css class 2": "pls--constant",
+          "layout": "custdetail_layout_hidden_fields",
+          "container": "1"
+        },
+        {
+          "id": "constant12",
+          "field type": "output field",
+          "value": "Primary Contact",
+          "css class": "pls--label-right",
+          "left": "270px",
+          "cursor column": "2",
+          "top": "325px",
+          "cursor row": "11",
+          "css class 2": "pls--constant",
+          "layout": "custdetail_layout_hidden_fields",
+          "container": "1"
+        },
+        {
+          "id": "custdetail_btncancel",
+          "field type": "graphic button",
+          "value": {
+            "fieldName": "N30",
+            "customTrue": "Back",
+            "customFalse": "Cancel",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "designValue": "[expression]"
+          },
+          "icon position": "left",
+          "icon": "material:arrow_back",
+          "shortcut key": "F3",
+          "left": "20px",
+          "width": "140px",
+          "css class": "pls--button--tertiary",
+          "css class 2": "pls--ripple",
+          "top": "625px",
+          "response": {
+            "fieldName": "*in03",
+            "customTrue": "",
+            "customFalse": "",
+            "dataType": "indicator",
+            "formatting": "Indicator",
+            "indFormat": "1 / 0"
+          },
+          "layout": "custdetail_screenlayout",
+          "container": "1"
+        },
+        {
+          "id": "custdetail_btnsave",
+          "field type": "graphic button",
+          "value": "Save",
+          "icon position": "left",
+          "icon": "material:save",
+          "shortcut key": "Enter",
+          "left": "175px",
+          "width": "140px",
+          "css class": "pls--button--primary",
+          "css class 2": "pls--ripple",
+          "visibility": {
+            "fieldName": "30",
+            "customTrue": "",
+            "customFalse": "",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "visible / hidden"
+          },
+          "disabled": {
+            "fieldName": "N30",
+            "customTrue": "",
+            "customFalse": "",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "true / false"
+          },
+          "top": "625px",
+          "layout": "custdetail_screenlayout",
+          "container": "1"
+        },
+        {
+          "id": "fldCustomer",
+          "field type": "layout",
+          "css class": "pls--fieldset",
+          "left": "75px",
+          "top": "20px",
+          "template": "fieldset",
+          "width": "775px",
+          "height": "235px",
+          "legend": "Customer",
+          "layout": "custdetail_screenlayout",
+          "container": "1"
+        },
+        {
+          "id": "constant13",
+          "field type": "output field",
+          "value": "Address:",
+          "css class": "pls--label-right",
+          "left": "60px",
+          "cursor column": "2",
+          "top": "10px",
+          "cursor row": "13",
+          "css class 2": "pls--constant",
+          "width": "130px",
+          "layout": "Layout1",
+          "container": "1"
+        },
+        {
+          "id": "saddr1",
+          "field type": "textbox",
+          "css class": "pls--input",
+          "allow field exit": "true",
+          "value": {
+            "fieldName": "saddr1",
+            "designValue": "[saddr1]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "true",
+            "trimTrailing": "true",
+            "dataLength": "40"
+          },
+          "left": "210px",
+          "cursor column": "17",
+          "top": "10px",
+          "cursor row": "13",
+          "width": "420px",
+          "read only": {
+            "fieldName": "N30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "true / false"
+          },
+          "css class 2": {
+            "fieldName": "N30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "PR",
+            "customFalse": ""
+          },
+          "css class 3": {
+            "fieldName": "30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "UL_removed",
+            "customFalse": ""
+          },
+          "float placeholder": "false",
+          "layout": "Layout1",
+          "container": "1"
+        },
+        {
+          "id": "saddr2",
+          "field type": "textbox",
+          "css class": "pls--input",
+          "allow field exit": "true",
+          "value": {
+            "fieldName": "saddr2",
+            "designValue": "[saddr2]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "true",
+            "trimTrailing": "true",
+            "dataLength": "40"
+          },
+          "left": "210px",
+          "cursor column": "17",
+          "top": "50px",
+          "cursor row": "14",
+          "width": "420px",
+          "read only": {
+            "fieldName": "N30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "true / false"
+          },
+          "css class 2": {
+            "fieldName": "N30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "PR",
+            "customFalse": ""
+          },
+          "css class 3": {
+            "fieldName": "30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "UL_removed",
+            "customFalse": ""
+          },
+          "float placeholder": "false",
+          "layout": "Layout1",
+          "container": "1"
+        },
+        {
+          "id": "constant14",
+          "field type": "output field",
+          "value": "City:",
+          "css class": "pls--label-right",
+          "left": "60px",
+          "cursor column": "2",
+          "top": "90px",
+          "cursor row": "15",
+          "css class 2": "pls--constant",
+          "width": "130px",
+          "layout": "Layout1",
+          "container": "1"
+        },
+        {
+          "id": "scity",
+          "field type": "textbox",
+          "css class": "pls--input",
+          "allow field exit": "true",
+          "value": {
+            "fieldName": "scity",
+            "designValue": "[scity]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "true",
+            "trimTrailing": "true",
+            "dataLength": "30"
+          },
+          "left": "210px",
+          "cursor column": "17",
+          "top": "90px",
+          "cursor row": "15",
+          "width": "420px",
+          "read only": {
+            "fieldName": "N30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "true / false"
+          },
+          "css class 2": {
+            "fieldName": "N30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "PR",
+            "customFalse": ""
+          },
+          "css class 3": {
+            "fieldName": "30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "UL_removed",
+            "customFalse": ""
+          },
+          "float placeholder": "false",
+          "layout": "Layout1",
+          "container": "1"
+        },
+        {
+          "id": "constant15",
+          "field type": "output field",
+          "value": "State:",
+          "css class": "pls--label-right",
+          "left": "60px",
+          "cursor column": "2",
+          "top": "130px",
+          "cursor row": "16",
+          "css class 2": "pls--constant",
+          "width": "130px",
+          "layout": "Layout1",
+          "container": "1"
+        },
+        {
+          "id": "sstate",
+          "field type": "textbox",
+          "css class": "pls--input",
+          "allow field exit": "true",
+          "value": {
+            "fieldName": "sstate",
+            "designValue": "[sstate]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "true",
+            "trimTrailing": "true",
+            "textTransform": "uppercase",
+            "dataLength": "2"
+          },
+          "text transform": "uppercase",
+          "left": "210px",
+          "cursor column": "17",
+          "top": "130px",
+          "cursor row": "16",
+          "width": "40px",
+          "read only": {
+            "fieldName": "N30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "true / false"
+          },
+          "css class 2": {
+            "fieldName": "N30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "PR",
+            "customFalse": ""
+          },
+          "css class 3": {
+            "fieldName": "30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "UL_removed",
+            "customFalse": ""
+          },
+          "float placeholder": "false",
+          "layout": "Layout1",
+          "container": "1"
+        },
+        {
+          "id": "constant16",
+          "field type": "output field",
+          "value": "Zip:",
+          "css class": "pls--label-right",
+          "left": "60px",
+          "cursor column": "2",
+          "top": "170px",
+          "cursor row": "17",
+          "css class 2": "pls--constant",
+          "width": "130px",
+          "layout": "Layout1",
+          "container": "1"
+        },
+        {
+          "id": "szip",
+          "field type": "textbox",
+          "css class": "pls--input",
+          "allow field exit": "true",
+          "value": {
+            "fieldName": "szip",
+            "designValue": "[szip]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "true",
+            "trimTrailing": "true",
+            "dataLength": "10"
+          },
+          "left": "210px",
+          "cursor column": "17",
+          "top": "170px",
+          "cursor row": "17",
+          "width": "210px",
+          "read only": {
+            "fieldName": "N30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "true / false"
+          },
+          "css class 2": {
+            "fieldName": "N30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "PR",
+            "customFalse": ""
+          },
+          "css class 3": {
+            "fieldName": "30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "UL_removed",
+            "customFalse": ""
+          },
+          "float placeholder": "false",
+          "layout": "Layout1",
+          "container": "1"
+        },
+        {
+          "id": "constant17",
+          "field type": "output field",
+          "value": "Email:",
+          "css class": "pls--label-right",
+          "left": "60px",
+          "cursor column": "2",
+          "top": "210px",
+          "cursor row": "18",
+          "css class 2": "pls--constant",
+          "width": "130px",
+          "layout": "Layout1",
+          "container": "1"
+        },
+        {
+          "id": "semail",
+          "field type": "textbox",
+          "css class": "pls--input",
+          "allow field exit": "true",
+          "value": {
+            "fieldName": "semail",
+            "designValue": "[semail]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "true",
+            "trimTrailing": "true",
+            "dataLength": "40"
+          },
+          "left": "210px",
+          "cursor column": "17",
+          "top": "210px",
+          "cursor row": "18",
+          "width": "420px",
+          "read only": {
+            "fieldName": "N30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "true / false"
+          },
+          "css class 2": {
+            "fieldName": "N30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "PR",
+            "customFalse": ""
+          },
+          "css class 3": {
+            "fieldName": "30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "UL_removed",
+            "customFalse": ""
+          },
+          "float placeholder": "false",
+          "layout": "Layout1",
+          "container": "1"
+        },
+        {
+          "id": "constant18",
+          "field type": "output field",
+          "value": "Phone:",
+          "css class": "pls--label-right",
+          "left": "60px",
+          "cursor column": "2",
+          "top": "250px",
+          "cursor row": "19",
+          "css class 2": "pls--constant",
+          "width": "130px",
+          "layout": "Layout1",
+          "container": "1"
+        },
+        {
+          "id": "sphone",
+          "field type": "textbox",
+          "css class": "pls--input",
+          "allow field exit": "true",
+          "value": {
+            "fieldName": "sphone",
+            "designValue": "[sphone]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "true",
+            "trimTrailing": "true",
+            "dataLength": "15"
+          },
+          "left": "210px",
+          "cursor column": "17",
+          "top": "250px",
+          "cursor row": "19",
+          "width": "210px",
+          "read only": {
+            "fieldName": "N30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "true / false"
+          },
+          "css class 2": {
+            "fieldName": "N30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "PR",
+            "customFalse": ""
+          },
+          "css class 3": {
+            "fieldName": "30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "UL_removed",
+            "customFalse": ""
+          },
+          "float placeholder": "false",
+          "layout": "Layout1",
+          "container": "1"
+        },
+        {
+          "id": "constant3",
+          "field type": "output field",
+          "value": "Name:",
+          "css class": "pls--label-right",
+          "left": "70px",
+          "cursor column": "2",
+          "top": "5px",
+          "cursor row": "5",
+          "css class 2": "pls--constant",
+          "width": "130px",
+          "layout": "fldCustomer",
+          "container": "1"
+        },
+        {
+          "id": "sname",
+          "field type": "textbox",
+          "css class": "pls--input",
+          "allow field exit": "true",
+          "value": {
+            "fieldName": "sname",
+            "designValue": "[sname]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "true",
+            "trimTrailing": "true",
+            "dataLength": "40"
+          },
+          "left": "220px",
+          "cursor column": "17",
+          "top": "5px",
+          "cursor row": "5",
+          "width": "420px",
+          "read only": {
+            "fieldName": "N30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "true / false"
+          },
+          "css class 2": {
+            "fieldName": "N30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "PR",
+            "customFalse": ""
+          },
+          "css class 3": {
+            "fieldName": "30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "UL_removed",
+            "customFalse": ""
+          },
+          "float placeholder": "false",
+          "layout": "fldCustomer",
+          "container": "1"
+        },
+        {
+          "id": "constant4",
+          "field type": "output field",
+          "value": "Type:",
+          "css class": "pls--label-right",
+          "left": "70px",
+          "cursor column": "2",
+          "top": "45px",
+          "cursor row": "6",
+          "css class 2": "pls--constant",
+          "width": "130px",
+          "layout": "fldCustomer",
+          "container": "1"
+        },
+        {
+          "id": "stype",
+          "field type": "select box",
+          "css class": "pls--select-box",
+          "allow field exit": "true",
+          "value": {
+            "fieldName": "stype",
+            "designValue": "[stype]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "true",
+            "trimTrailing": "true",
+            "textTransform": "uppercase",
+            "dataLength": "1"
+          },
+          "text transform": "uppercase",
+          "left": "220px",
+          "cursor column": "17",
+          "top": "45px",
+          "cursor row": "6",
+          "width": "210px",
+          "css class 2": {
+            "fieldName": "N30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "PR",
+            "customFalse": ""
+          },
+          "css class 3": {
+            "fieldName": "30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "UL_removed",
+            "customFalse": ""
+          },
+          "choices": ",Business,Residential",
+          "choice values": ",B,R",
+          "layout": "fldCustomer",
+          "container": "1"
+        },
+        {
+          "id": "constant6",
+          "field type": "output field",
+          "value": "Status:",
+          "css class": "pls--label-right",
+          "left": "70px",
+          "cursor column": "2",
+          "top": "85px",
+          "cursor row": "7",
+          "css class 2": "pls--constant",
+          "width": "130px",
+          "layout": "fldCustomer",
+          "container": "1"
+        },
+        {
+          "id": "sstatus",
+          "field type": "select box",
+          "css class": "pls--select-box",
+          "allow field exit": "true",
+          "value": {
+            "fieldName": "sstatus",
+            "designValue": "[sstatus]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "true",
+            "trimTrailing": "true",
+            "textTransform": "uppercase",
+            "dataLength": "1"
+          },
+          "text transform": "uppercase",
+          "left": "220px",
+          "cursor column": "17",
+          "top": "85px",
+          "cursor row": "7",
+          "width": "210px",
+          "css class 2": {
+            "fieldName": "N30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "PR",
+            "customFalse": ""
+          },
+          "css class 3": {
+            "fieldName": "30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "UL_removed",
+            "customFalse": ""
+          },
+          "choices": ",Active,Inactive,Suspended",
+          "choice values": ",A,I,S",
+          "layout": "fldCustomer",
+          "container": "1"
+        },
+        {
+          "id": "constant10",
+          "field type": "output field",
+          "value": "Last order:",
+          "css class": "pls--label-right",
+          "left": "70px",
+          "cursor column": "2",
+          "top": "125px",
+          "cursor row": "8",
+          "css class 2": "pls--constant",
+          "width": "130px",
+          "layout": "fldCustomer",
+          "container": "1"
+        },
+        {
+          "id": "slastord",
+          "field type": "output field",
+          "value": {
+            "fieldName": "slastord",
+            "designValue": "[slastord]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "false",
+            "trimTrailing": "false",
+            "textTransform": "none",
+            "dataLength": "10"
+          },
+          "css class": "pls--output-field",
+          "left": "220px",
+          "cursor column": "17",
+          "top": "125px",
+          "cursor row": "8",
+          "css class 2": "pls--constant",
+          "layout": "fldCustomer",
+          "container": "1"
+        },
+        {
+          "id": "constant8",
+          "field type": "output field",
+          "value": "Credit limit:",
+          "css class": "pls--label-right",
+          "left": "340px",
+          "cursor column": "29",
+          "top": "125px",
+          "cursor row": "8",
+          "css class 2": "pls--constant",
+          "width": "130px",
+          "layout": "fldCustomer",
+          "container": "1"
+        },
+        {
+          "id": "slimit",
+          "field type": "textbox",
+          "css class": "pls--input",
+          "allow field exit": "true",
+          "value": {
+            "fieldName": "slimit",
+            "designValue": "[slimit]",
+            "dataType": "zoned",
+            "formatting": "Number",
+            "numSep": "false",
+            "zeroBalance": "true",
+            "zeroFill": "false",
+            "curSym": "",
+            "units": "",
+            "negNum": "-999.00",
+            "dataLength": "11",
+            "decPos": "2"
+          },
+          "left": "490px",
+          "cursor column": "44",
+          "top": "125px",
+          "cursor row": "8",
+          "width": "150px",
+          "read only": {
+            "fieldName": "N30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "true / false"
+          },
+          "css class 2": {
+            "fieldName": "N30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "PR",
+            "customFalse": ""
+          },
+          "css class 3": {
+            "fieldName": "30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "UL_removed",
+            "customFalse": ""
+          },
+          "float placeholder": "false",
+          "layout": "fldCustomer",
+          "container": "1"
+        },
+        {
+          "id": "constant11",
+          "field type": "output field",
+          "value": "Created on:",
+          "css class": "pls--label-right",
+          "left": "70px",
+          "cursor column": "2",
+          "top": "165px",
+          "cursor row": "9",
+          "css class 2": "pls--constant",
+          "width": "130px",
+          "layout": "fldCustomer",
+          "container": "1"
+        },
+        {
+          "id": "screated",
+          "field type": "output field",
+          "value": {
+            "fieldName": "screated",
+            "designValue": "[screated]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "false",
+            "trimTrailing": "false",
+            "textTransform": "none",
+            "dataLength": "10"
+          },
+          "css class": "pls--output-field",
+          "left": "220px",
+          "cursor column": "17",
+          "top": "165px",
+          "cursor row": "9",
+          "css class 2": "pls--constant",
+          "layout": "fldCustomer",
+          "container": "1"
+        },
+        {
+          "id": "constant9",
+          "field type": "output field",
+          "value": "Balance due:",
+          "css class": "pls--label-right",
+          "left": "340px",
+          "cursor column": "29",
+          "top": "165px",
+          "cursor row": "9",
+          "css class 2": "pls--constant",
+          "width": "130px",
+          "layout": "fldCustomer",
+          "container": "1"
+        },
+        {
+          "id": "sbalance",
+          "field type": "output field",
+          "value": {
+            "fieldName": "sbalance",
+            "designValue": "[sbalance]",
+            "dataType": "zoned",
+            "formatting": "Number",
+            "numSep": "false",
+            "zeroBalance": "true",
+            "zeroFill": "false",
+            "curSym": "",
+            "units": "",
+            "negNum": "-999.00",
+            "dataLength": "11",
+            "decPos": "2"
+          },
+          "css class": "pls--output-field",
+          "left": "490px",
+          "cursor column": "44",
+          "top": "165px",
+          "cursor row": "9",
+          "width": "130px",
+          "text align": "right",
+          "css class 2": "pls--constant",
+          "layout": "fldCustomer",
+          "container": "1"
+        }
+      ],
+      "dspf record layout": {
+        "custdetail": [
+          {
+            "name": "*in03",
+            "inBufPos": 1
+          },
+          {
+            "name": "*in30",
+            "outBufPos": 1
+          },
+          {
+            "name": "scustno",
+            "outBufPos": 2
+          },
+          {
+            "name": "sname",
+            "inBufPos": 2,
+            "outBufPos": 8
+          },
+          {
+            "name": "stype",
+            "inBufPos": 42,
+            "outBufPos": 48
+          },
+          {
+            "name": "sstatus",
+            "inBufPos": 43,
+            "outBufPos": 49
+          },
+          {
+            "name": "slimit",
+            "inBufPos": 44,
+            "outBufPos": 50
+          },
+          {
+            "name": "sbalance",
+            "outBufPos": 61
+          },
+          {
+            "name": "slastord",
+            "outBufPos": 72
+          },
+          {
+            "name": "screated",
+            "outBufPos": 82
+          },
+          {
+            "name": "saddr1",
+            "inBufPos": 55,
+            "outBufPos": 92
+          },
+          {
+            "name": "saddr2",
+            "inBufPos": 95,
+            "outBufPos": 132
+          },
+          {
+            "name": "scity",
+            "inBufPos": 135,
+            "outBufPos": 172
+          },
+          {
+            "name": "sstate",
+            "inBufPos": 165,
+            "outBufPos": 202
+          },
+          {
+            "name": "szip",
+            "inBufPos": 167,
+            "outBufPos": 204
+          },
+          {
+            "name": "semail",
+            "inBufPos": 177,
+            "outBufPos": 214
+          },
+          {
+            "name": "sphone",
+            "inBufPos": 217,
+            "outBufPos": 254
+          },
+          {
+            "name": "sfkeys",
+            "outBufPos": 269
+          }
+        ]
+      }
+    },
+    {
+      "screen": {
+        "record format name": "errorwin",
+        "show as window": "true",
+        "window top": "7",
+        "window left": "24",
+        "overlay range": "1-9"
+      },
+      "items": [
+        {
+          "id": "errorwin_layout_hidden_fields",
+          "field type": "layout",
+          "template": "simple container",
+          "overflow x": "auto",
+          "overflow y": "auto",
+          "left": "0px",
+          "top": "0px",
+          "height": "40px",
+          "width": "40px",
+          "z index": "0",
+          "locked in place": "true",
+          "css class": "hidden",
+          "visibility": "hidden"
+        },
+        {
+          "id": "errorwin_screenlayout",
+          "field type": "layout",
+          "left": "5px",
+          "top": "5px",
+          "height": "405px",
+          "width": "335px",
+          "z index": "8",
+          "locked in place": "true",
+          "template": "css panel",
+          "header height": "45px",
+          "header text": "Error",
+          "header theme": "pls--header",
+          "body theme": "pls--body",
+          "css class": "pls--panel",
+          "css class 2": "info",
+          "css class 3": "window"
+        },
+        {
+          "id": "serrattr",
+          "field type": "output field",
+          "value": {
+            "fieldName": "serrattr",
+            "designValue": "[serrattr]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "false",
+            "trimTrailing": "true",
+            "textTransform": "none",
+            "dataLength": "1"
+          },
+          "left": "0px",
+          "top": "40px",
+          "css class 2": "pls--constant",
+          "layout": "errorwin_layout_hidden_fields",
+          "container": "1"
+        },
+        {
+          "id": "btnSubmit",
+          "field type": "graphic button",
+          "value": "Continue",
+          "shortcut key": "Enter",
+          "tool tip": "Enter",
+          "left": "420px",
+          "top": "40px",
+          "width": "140px",
+          "css class": "pls--button",
+          "auto arrange": "true",
+          "css class 2": "negative",
+          "layout": "errorwin_layout_hidden_fields",
+          "container": "1"
+        },
+        {
+          "id": "btnCA03",
+          "field type": "graphic button",
+          "bypass validation": "true",
+          "value": "Exit",
+          "shortcut key": "F3",
+          "tool tip": "F3",
+          "response": {
+            "fieldName": "*in03",
+            "dataType": "indicator",
+            "formatting": "Indicator",
+            "indFormat": "1 / 0"
+          },
+          "left": "560px",
+          "top": "40px",
+          "width": "140px",
+          "css class": "pls--button",
+          "auto arrange": "true",
+          "css class 2": "negative",
+          "layout": "errorwin_layout_hidden_fields",
+          "container": "1"
+        },
+        {
+          "id": "serrwinmsg",
+          "field type": "text area",
+          "css class": "pls--input",
+          "value": {
+            "fieldName": "serrwinmsg",
+            "designValue": "[serrwinmsg]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "true",
+            "trimTrailing": "true",
+            "textTransform": "uppercase",
+            "dataLength": "210"
+          },
+          "text transform": "uppercase",
+          "left": "20px",
+          "cursor column": "2",
+          "top": "15px",
+          "cursor row": "1",
+          "width": "300px",
+          "height": "280px",
+          "display attribute field": {
+            "fieldName": "serrattr",
+            "dataLength": "1",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "false",
+            "trimTrailing": "false",
+            "textTransform": "none"
+          },
+          "float placeholder": "false",
+          "layout": "errorwin_screenlayout",
+          "container": "1"
+        },
+        {
+          "id": "errorwin_btncancel",
+          "field type": "graphic button",
+          "value": "Exit",
+          "icon position": "left",
+          "icon": "material:backspace",
+          "shortcut key": "F3",
+          "left": "20px",
+          "width": "140px",
+          "css class": "pls--button--tertiary",
+          "css class 2": "pls--ripple",
+          "top": "305px",
+          "bypass validation": "true",
+          "layout": "errorwin_screenlayout",
+          "container": "1"
+        },
+        {
+          "id": "errorwin_btnsubmit",
+          "field type": "graphic button",
+          "value": "OK",
+          "icon position": "left",
+          "icon": "material:keyboard_return",
+          "left": "175px",
+          "width": "140px",
+          "css class": "pls--button--primary",
+          "css class 2": "pls--ripple",
+          "css class 3": "icon-flip-h",
+          "shortcut key": "Enter",
+          "top": "305px",
+          "layout": "errorwin_screenlayout",
+          "container": "1"
+        }
+      ],
+      "dspf record layout": {
+        "errorwin": [
+          {
+            "name": "*in03",
+            "inBufPos": 1
+          },
+          {
+            "name": "serrwinmsg",
+            "inBufPos": 2,
+            "outBufPos": 1
+          },
+          {
+            "name": "serrattr",
+            "outBufPos": 211
+          }
+        ]
+      }
+    }
+  ],
+  "keywords": [],
+  "long name aliases": true
+}

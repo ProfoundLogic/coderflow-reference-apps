@@ -1,0 +1,9 @@
+     A*
+     A                                      UNIQUE
+     A          R CATEG
+     A*
+     A            CATID          5  0       TEXT('Category Id')
+     A            CATNAME       30          TEXT('Category Name')
+     A*
+     A          K CATID
+     A*

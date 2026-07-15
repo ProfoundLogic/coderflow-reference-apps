@@ -1,0 +1,32 @@
+{
+  "type": "ejs",
+  "formats": {
+    "custctl": {
+      "description": "Customer List Control",
+      "template": "/profoundui/userdata/ui/wrkcuste/custlist.ejs",
+      "css": ["/profoundui/userdata/ui/wrkcuste/custlist.css"],
+      "js": ["/profoundui/userdata/ui/wrkcuste/custlist.js"],
+      "fields": {
+        "action":     { "type": "char", "length": 10 },
+        "sfndcustno": { "type": "zoned", "length": 6 },
+        "sfilter":    { "type": "char", "length": 50 },
+        "soptdesc":   { "type": "char", "length": 20 },
+        "msg":        { "type": "char", "length": 78 }
+      },
+      "subfiles": {
+        "custsfl": {
+          "description": "Customer Subfile",
+          "clear": "sflclear",
+          "fields": {
+            "sopt":    { "type": "char", "length": 2 },
+            "scustno": { "type": "zoned", "length": 6 },
+            "sname":   { "type": "char", "length": 40 },
+            "semail":  { "type": "char", "length": 60 },
+            "sphone":  { "type": "char", "length": 15 },
+            "saddr":   { "type": "char", "length": 100 }
+          }
+        }
+      }
+    }
+  }
+}

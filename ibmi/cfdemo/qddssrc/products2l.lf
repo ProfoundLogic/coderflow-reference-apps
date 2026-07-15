@@ -1,0 +1,8 @@
+     A*
+     A                                      UNIQUE
+     A          R PRODUCTS                  PFILE(PRODUCTSP)
+     A*
+     A          K PRCATID
+     A          K PRNAME
+     A          K PRID
+     A*

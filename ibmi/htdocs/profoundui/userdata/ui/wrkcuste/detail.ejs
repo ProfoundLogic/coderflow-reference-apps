@@ -1,0 +1,87 @@
+<div class="detail-screen">
+  <div class="header">
+    <h1>Customer Detail</h1>
+    <span class="custno-badge">#<%= scustno %></span>
+  </div>
+
+  <% if (typeof msg !== 'undefined' && msg && msg.trim()) { %>
+    <div class="message message-error"><%= msg %></div>
+  <% } %>
+
+  <div class="detail-grid">
+    <section class="card">
+      <h2>Customer Information</h2>
+      <div class="field-group">
+        <div class="field">
+          <label>Name</label>
+          <span class="value"><%= sname %></span>
+        </div>
+        <div class="field">
+          <label>Type</label>
+          <span class="value"><%= stype === 'R' ? 'Retail' : stype === 'B' ? 'Business' : stype %></span>
+        </div>
+        <div class="field">
+          <label>Status</label>
+          <span class="value status-<%= sstatus %>">
+            <%= sstatus === 'A' ? 'Active' : sstatus === 'I' ? 'Inactive' : sstatus === 'S' ? 'Suspended' : sstatus %>
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Financial</h2>
+      <div class="field-group">
+        <div class="field">
+          <label>Credit Limit</label>
+          <span class="value">$<%= Number(slimit).toLocaleString('en-US', {minimumFractionDigits: 2}) %></span>
+        </div>
+        <div class="field">
+          <label>Balance Due</label>
+          <span class="value">$<%= Number(sbalance).toLocaleString('en-US', {minimumFractionDigits: 2}) %></span>
+        </div>
+        <div class="field">
+          <label>Last Order</label>
+          <span class="value"><%= slastord %></span>
+        </div>
+        <div class="field">
+          <label>Created</label>
+          <span class="value"><%= screated %></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Contact</h2>
+      <div class="field-group">
+        <div class="field">
+          <label>Email</label>
+          <span class="value"><%= semail %></span>
+        </div>
+        <div class="field">
+          <label>Phone</label>
+          <span class="value"><%= sphone %></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Address</h2>
+      <div class="field-group">
+        <div class="field full-width">
+          <span class="value">
+            <%= saddr1 %><br>
+            <% if (typeof saddr2 !== 'undefined' && saddr2 && saddr2.trim()) { %><%= saddr2 %><br><% } %>
+            <%= scity %>, <%= sstate %> <%= szip %>
+          </span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <input type="hidden" name="action" value="">
+
+  <div class="footer">
+    <button onclick="pui.submit({action: 'EXIT'})" data-fkey="F3" class="btn btn-secondary">Back (F3)</button>
+  </div>
+</div>

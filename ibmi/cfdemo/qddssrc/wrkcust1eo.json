@@ -1,0 +1,29 @@
+{
+  "type": "ejs",
+  "formats": {
+    "custdetail": {
+      "description": "Customer Detail",
+      "template": "/profoundui/userdata/ui/wrkcuste/detail.ejs",
+      "css": ["/profoundui/userdata/ui/wrkcuste/detail.css"],
+      "fields": {
+        "action":   { "type": "char", "length": 10 },
+        "scustno":  { "type": "zoned", "length": 6 },
+        "sname":    { "type": "char", "length": 40 },
+        "stype":    { "type": "char", "length": 1 },
+        "sstatus":  { "type": "char", "length": 1 },
+        "slimit":   { "type": "packed", "length": 11, "decimals": 2 },
+        "sbalance": { "type": "packed", "length": 11, "decimals": 2 },
+        "slastord": { "type": "char", "length": 10 },
+        "screated": { "type": "char", "length": 10 },
+        "saddr1":   { "type": "char", "length": 40 },
+        "saddr2":   { "type": "char", "length": 40 },
+        "scity":    { "type": "char", "length": 30 },
+        "sstate":   { "type": "char", "length": 2 },
+        "szip":     { "type": "char", "length": 10 },
+        "semail":   { "type": "char", "length": 60 },
+        "sphone":   { "type": "char", "length": 15 },
+        "msg":      { "type": "char", "length": 78 }
+      }
+    }
+  }
+}

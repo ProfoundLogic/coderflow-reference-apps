@@ -1,0 +1,30 @@
+     A* Free Form Menu: MENU
+     A                                      DSPSIZ(24 80 *DS3                  -
+     A                                             27 132 *DS4)
+     A                                      CHGINPDFT
+     A                                      INDARA
+     A                                      PRINT(*LIBL/QSYSPRT)
+     A          R MENU
+     A                                      DSPMOD(*DS3)
+     A                                      LOCK
+     A                                      SLNO(01)
+     A                                      CLRL(*ALL)
+     A                                      ALWROL
+     A                                      CF03
+     A                                      HELP
+     A                                      HOME
+     A                                      HLPRTN
+     A                                  1  2'MENU'
+     A                                      COLOR(BLU)
+     A                                  1 29'Agentic Coding Demo Menu'
+     A                                      DSPATR(HI)
+     A                                      COLOR(WHT)
+     A                                  3  2'Select one of the following:'
+     A                                      COLOR(BLU)
+     A                                  5  7'1. Work with Customers'
+     A                                  6  7'2. Work with Customers (RPGOA)'
+     A                                  7  7'3. Work with Customers (EJS)'
+     A                                 10  6'90. Sign off'
+     A* CMDPROMPT  Do not delete this DDS spec.
+     A                                021  2'Selection:                        -
+     A                                          '

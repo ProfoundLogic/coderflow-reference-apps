@@ -1,0 +1,11 @@
+     A*
+     A                                      UNIQUE
+     A          R FEATURES
+     A*
+     A            FEID           5  0       TEXT('Feature Id')
+     A            FENAME        30          TEXT('Feature Name')
+     A            FEDESC        60          TEXT('Description')
+
+     A*
+     A          K FEID
+     A*

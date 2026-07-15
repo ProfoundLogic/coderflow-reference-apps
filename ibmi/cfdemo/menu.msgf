@@ -1,0 +1,5 @@
+crtmsgf msgf($LIBRARY/$NAME)
+addmsgd msgid(usr0001) msgf($LIBRARY/$NAME) msg('call wrkcustr') seclvl(*none) sev(00) fmt(*none)
+addmsgd msgid(usr0002) msgf($LIBRARY/$NAME) msg('call wrkcustro') seclvl(*none) sev(00) fmt(*none)
+addmsgd msgid(usr0003) msgf($LIBRARY/$NAME) msg('call wrkcusteo') seclvl(*none) sev(00) fmt(*none)
+addmsgd msgid(usr0090) msgf($LIBRARY/$NAME) msg('signoff') seclvl(*none) sev(00) fmt(*none)

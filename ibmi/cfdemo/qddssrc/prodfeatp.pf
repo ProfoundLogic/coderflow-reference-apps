@@ -1,0 +1,11 @@
+     A*
+     A                                      UNIQUE
+     A          R PRODFEAT
+     A*
+     A            XPRID          5  0       TEXT('Product Id')
+     A            XFEID          5  0       TEXT('Feature Id')
+
+     A*
+     A          K XPRID
+     A          K XFEID
+     A*

@@ -1,0 +1,116 @@
+{
+  "name": "ibmi",
+  "description": "IBM i agentic coding examples",
+  "image_name": "ibmi",
+  "default_agent": "claude",
+  "repos": [
+    {
+      "name": "coderflow-reference-apps",
+      "url": "https://github.com/ProfoundLogic/coderflow-reference-apps",
+      "branch": "main",
+      "allow_branch_selection": true,
+      "clone_auto": true,
+      "ibmiImportEnabled": true
+    }
+  ],
+  "external_connections": [
+    {
+      "name": "dev",
+      "type": "ibmi",
+      "description": "IBM i Development Server",
+      "available_for": [
+        "tasks"
+      ],
+      "config": {
+        "features": [
+          "sql",
+          "build",
+          "interactive",
+          "ssh",
+          "sync",
+          "ejs-display-files"
+        ],
+        "sync_credentials": "prompt",
+        "build_library_prefix": "AITSK"
+      }
+    }
+  ],
+  "standardInstructions": {
+    "outputRequirements": true,
+    "screenshotGuidelines": false,
+    "ibmiOutputRequirements": true,
+    "ibmiExploratoryVerification": true,
+    "ibmiDatabaseSql": true
+  },
+  "memory": {
+    "enabled": true
+  },
+  "deployment_profile_order": [
+    "build-and-promote"
+  ],
+  "tasks": {
+    "defaultShared": true
+  },
+  "setup": {
+    "version": 1,
+    "title": "Finish setting up IBM i",
+    "steps": [
+      {
+        "id": "configure-connection",
+        "title": "Fill in the IBM i connection",
+        "body": "Open the Connections tab and add your host and a non-privileged agentic profile to the connection.",
+        "action": {
+          "type": "navigate",
+          "label": "Open the Connections tab",
+          "config": { "tab": "connections", "connection": "dev" }
+        },
+        "docsLabel": "Full Guide",
+        "docs": "/docs/ibmi/reference-app/configure-connection"
+      },
+      {
+        "id": "install-base-library",
+        "title": "Install the CFDEMO base library",
+        "body": "Restore the CFDEMO base library onto your IBM i — with the installer, or by hand.",
+        "action": {
+          "type": "ibmi-savf-install",
+          "config": {
+            "source": {
+              "kind": "github-release",
+              "repo": "ProfoundLogic/coderflow-reference-apps",
+              "tagPrefix": "ibmi/",
+              "asset": "cfdemo.savf"
+            },
+            "defaultLibrary": "CFDEMO",
+            "savfLibrary": "QTEMP",
+            "libraryText": "CoderFlow Example Base Library",
+            "commands": [
+              "RSTOBJ OBJ(*ALL) SAVLIB({SAVLIB}) DEV(*SAVF) SAVF({LIB}/{SAVF}) RSTLIB({LIB})",
+              "QSYS/DLTF FILE({LIB}/{SAVF})"
+            ]
+          }
+        },
+        "docsLabel": "Open the manual install guide",
+        "docs": "/docs/ibmi/reference-app/install-base-library"
+      },
+      {
+        "id": "populate-your-repo",
+        "title": "Set up your project repository",
+        "body": "Add your own repository and run the guided task to populate it with the example source.",
+        "docsLabel": "Full Guide",
+        "docs": "/docs/ibmi/reference-app/use-your-own-repo"
+      },
+      {
+        "id": "point-connection-at-repo",
+        "title": "Point the connection at your repo",
+        "body": "Back on the Connections tab, edit the dev connection and set its build repository to your repo.",
+        "action": {
+          "type": "navigate",
+          "label": "Open the Connections tab",
+          "config": { "tab": "connections", "connection": "dev" }
+        },
+        "docsLabel": "Full Guide",
+        "docs": "/docs/ibmi/reference-app/use-your-own-repo#point-the-connection-at-your-repo"
+      }
+    ]
+  }
+}

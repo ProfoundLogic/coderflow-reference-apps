@@ -4,6 +4,12 @@
 You don't need them to *use* the apps — point a CoderFlow environment at a combo
 directory and follow its README.
 
+- [`generate.sh`](#generatesh) assembles the backend × front-end combos and the
+  standalone `static` / `php-html` examples from `../templates/`.
+- [`ibmi-build/`](./ibmi-build) is separate IBM i build tooling: it builds the
+  [`ibmi`](../ibmi) app and publishes its save-file release. It's unrelated to
+  `generate.sh` — see its own README.
+
 ## generate.sh
 
 Assembles every backend × front-end combo from the hand-authored templates in

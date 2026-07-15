@@ -1,0 +1,56 @@
+     A                                      DSPSIZ(24 80 *DS3)
+     A          R CUSTSFL                   SFL
+     A  51                                  SFLNXTCHG
+     A            SOPT           2A  B  9  2
+     A  50                                  DSPATR(RI)
+     A  50                                  DSPATR(PC)
+     A            SCUSTNO        6S 0O  9  6
+     A            SNAME         20A  O  9 15
+     A            SEMAIL        25A  O  9 37
+     A            SPHONE        15A  O  9 64
+     A                                 10  6'Address:'
+     A                                      COLOR(WHT)
+     A            SADDR         64A  O 10 15
+     A          R CUSTCTL                   SFLCTL(CUSTSFL)
+     A                                      SFLSIZ(0008)
+     A                                      SFLPAG(0007)
+     A                                      CA03(03 'Exit')
+     A                                      OVERLAY
+     A N31 30                               SFLDSP
+     A                                      SFLDSPCTL
+     A  31                                  SFLCLR
+     A N31 30                               SFLEND
+     A N31 30                               SFLDROP(CF11)
+     A                                  1 31'Work with Customers'
+     A                                      COLOR(WHT)
+     A                                  3  2'Find customer by number . :'
+     A            SFNDCUSTNO     6Y 0B  3 31EDTCDE(Z)
+     A                                  4  2'Filter  . . . . . . . . . :'
+     A            SFILTER       48A  B  4 31CHECK(LC)
+     A                                  8  6'Cust #'
+     A                                      COLOR(WHT)
+     A                                  8 15'Name'
+     A                                      COLOR(WHT)
+     A                                  8  2'Opt'
+     A                                      COLOR(WHT)
+     A                                  8 37'Primary Email'
+     A                                      COLOR(WHT)
+     A                                  8 64'Phone'
+     A                                      COLOR(WHT)
+     A            SOPTDESC      77   O  6  2COLOR(BLU)
+     A          R CUSTFOOT
+     A            SFKEYS        77A  O 23  2COLOR(BLU)
+     A          R CUSTNONE
+     A                                      OVERLAY
+     A                                 10 26'** No customers to display **'
+     A          R CUSTMSGSFL                SFL
+     A                                      SFLMSGRCD(24)
+     A            SMSGKEY                   SFLMSGKEY
+     A            SPGMQ                     SFLPGMQ(10)
+     A          R CUSTMSGCTL                SFLCTL(CUSTMSGSFL)
+     A                                      OVERLAY
+     A N41 40                               SFLDSP
+     A  41                                  SFLCLR
+     A N41 40                               SFLEND
+     A                                      SFLSIZ(0002)
+     A                                      SFLPAG(0001)

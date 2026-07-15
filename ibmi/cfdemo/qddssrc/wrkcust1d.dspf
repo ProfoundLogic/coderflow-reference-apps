@@ -1,0 +1,74 @@
+     A                                      DSPSIZ(24 80 *DS3)
+     A          R CUSTDETAIL
+     A                                      CA03(03 'Exit')
+     A                                  1 33'Customer Detail'
+     A                                      COLOR(WHT)
+     A                                  3  2'Customer'
+     A                                      COLOR(WHT)
+     A            SCUSTNO        6S 0O  3 11COLOR(WHT)
+     A                                  5  2'Name:'
+     A            SNAME         40A  B  5 17CHECK(LC)
+     A N30                                  DSPATR(PR)
+     A  30                                  DSPATR(UL)
+     A                                  6  2'Type:'
+     A            STYPE          1A  B  6 17
+     A N30                                  DSPATR(PR)
+     A  30                                  DSPATR(UL)
+     A                                  6 19'(B=Business, R=Residential)'
+     A                                  7  2'Status:'
+     A            SSTATUS        1A  B  7 17
+     A N30                                  DSPATR(PR)
+     A  30                                  DSPATR(UL)
+     A                                  7 19'(A=Active, I=Inactive, S=Suspended-
+     A                                      )'
+     A                                  8 29'Credit limit:'
+     A            SLIMIT        11Y 2B  8 44EDTCDE(P)
+     A N30                                  DSPATR(PR)
+     A  30                                  DSPATR(UL)
+     A                                  9 29'Balance due:'
+     A            SBALANCE      11Y 2O  9 44EDTCDE(P)
+     A                                  8  2'Last order:'
+     A            SLASTORD      10A  O  8 17
+     A                                  9  2'Created on:'
+     A            SCREATED      10A  O  9 17
+     A                                 11  2'Primary Contact'
+     A                                      COLOR(WHT)
+     A                                 13  2'Address:'
+     A            SADDR1        40A  B 13 17CHECK(LC)
+     A N30                                  DSPATR(PR)
+     A  30                                  DSPATR(UL)
+     A            SADDR2        40A  B 14 17CHECK(LC)
+     A N30                                  DSPATR(PR)
+     A  30                                  DSPATR(UL)
+     A                                 15  2'City:'
+     A            SCITY         30A  B 15 17CHECK(LC)
+     A N30                                  DSPATR(PR)
+     A  30                                  DSPATR(UL)
+     A                                 16  2'State:'
+     A            SSTATE         2A  B 16 17
+     A N30                                  DSPATR(PR)
+     A  30                                  DSPATR(UL)
+     A                                 17  2'Zip:'
+     A            SZIP          10A  B 17 17CHECK(LC)
+     A N30                                  DSPATR(PR)
+     A  30                                  DSPATR(UL)
+     A                                 18  2'Email:'
+     A            SEMAIL        40A  B 18 17CHECK(LC)
+     A N30                                  DSPATR(PR)
+     A  30                                  DSPATR(UL)
+     A                                 19  2'Phone:'
+     A            SPHONE        15A  B 19 17CHECK(LC)
+     A N30                                  DSPATR(PR)
+     A  30                                  DSPATR(UL)
+     A            SFKEYS        77A  O 23  2COLOR(BLU)
+     A          R ERRORWIN
+     A                                      WINDOW(7 24 10 32)
+     A                                      CA03(03 'Exit')
+     A                                      WDWBORDER((*COLOR RED))
+     A                                      WDWTITLE((*TEXT 'Error'))
+     A            SERRWINMSG   210A  B  1  2CNTFLD(030)
+     A                                      WRDWRAP
+     A                                      DSPATR(&SERRATTR)
+     A            SERRATTR       1A  P
+     A                                  9  2'F3=Exit'
+     A                                      COLOR(BLU)

@@ -1,0 +1,799 @@
+{
+  "text": "",
+  "formats": [
+    {
+      "screen": {
+        "record format name": "custctl",
+        "overlay": "true",
+        "overlay range": "1-22"
+      },
+      "items": [
+        {
+          "id": "custctl_layout_hidden_fields",
+          "field type": "layout",
+          "template": "simple container",
+          "overflow x": "auto",
+          "overflow y": "auto",
+          "left": "0px",
+          "top": "0px",
+          "height": "40px",
+          "width": "40px",
+          "z index": "0",
+          "locked in place": "true",
+          "css class": "hidden",
+          "visibility": "hidden"
+        },
+        {
+          "id": "custctl_screenlayout",
+          "field type": "layout",
+          "template": "css panel",
+          "header height": "45px",
+          "left": "25px",
+          "top": "5px",
+          "height": "205px",
+          "header theme": "pls--header",
+          "body theme": "pls--body",
+          "z index": "9",
+          "css class": "pls--panel--wide",
+          "css class 2": "info",
+          "header text": "Work with Customers"
+        },
+        {
+          "id": "OptionButtons1",
+          "field type": "option buttons",
+          "left": "0px",
+          "top": "225px",
+          "width": "100%",
+          "height": "35px",
+          "options": {
+            "fieldName": "soptdesc",
+            "dataLength": "77",
+            "trimLeading": "false",
+            "trimTrailing": "true",
+            "blankFill": "false",
+            "rjZeroFill": "false",
+            "dataType": "char",
+            "formatting": "Text",
+            "textTransform": "none"
+          },
+          "user defined data": "custsfl",
+          "actions": "[object Object],[object Object],[object Object]",
+          "user defined data 2": "sopt"
+        },
+        {
+          "id": "custsfl_filterAll",
+          "field type": "textbox",
+          "placeholder": "Filter All",
+          "float placeholder": "true",
+          "width": "1140px",
+          "height": "25px",
+          "css class": "pls--input",
+          "css class 2": "pls--filterAll",
+          "left": "25px",
+          "top": "275px",
+          "onkeyup": "pls.grid.setFilter('custsfl', this)"
+        },
+        {
+          "id": "custsfl",
+          "field type": "grid",
+          "number of columns": "6",
+          "record format name": "custsfl",
+          "subfile next changed": {
+            "fieldName": "51",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "true / false"
+          },
+          "display subfile": {
+            "fieldName": "N31 and 30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "true / false"
+          },
+          "display control record": "true",
+          "clear subfile": {
+            "fieldName": "31",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "true / false"
+          },
+          "subfile size": "15",
+          "collapsed": {
+            "fieldName": "N31 and 30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "true / false"
+          },
+          "header height": "35",
+          "row height": "33",
+          "row selection": "single",
+          "border color": "var(--color--grid-border)",
+          "border width": "1px",
+          "css class": "pls--grid",
+          "subfile end": {
+            "fieldName": "N31 and 30",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "true / false"
+          },
+          "number of rows": "15",
+          "top": "305px",
+          "left": "25px",
+          "column widths": "60,70,180,240,130,460",
+          "has header": "true",
+          "resizable columns": "true",
+          "movable columns": "true",
+          "hide columns option": "true",
+          "persist state": "program only",
+          "reset option": "true",
+          "show bar": "true",
+          "sortable columns": "true",
+          "find option": "true",
+          "filter option": "true",
+          "onfilterchange": "pls.grid.onFilterChanged(dom);",
+          "scrollbar": "sliding",
+          "scroll tool tip": "row number",
+          "export option": "true",
+          "export only visible columns": "true",
+          "xlsx export": "true",
+          "export file name": "js: pls.string.getExportFileName();",
+          "export with headings": "true",
+          "column headings": "Select,Cust #,Name,Primary Email,Phone,Address",
+          "header text align": ",",
+          "hover effect": "true",
+          "height": "497px",
+          "width": "1141px",
+          "onrowclick": "pls.grid.rowClick(rrn, rowNumber, event);"
+        },
+        {
+          "id": "constant3",
+          "field type": "output field",
+          "value": "Find customer by number:",
+          "css class": "pls--label-right",
+          "left": "20px",
+          "cursor column": "2",
+          "top": "15px",
+          "cursor row": "3",
+          "css class 2": "pls--constant",
+          "width": "270px",
+          "layout": "custctl_screenlayout",
+          "container": "1"
+        },
+        {
+          "id": "sfndcustno",
+          "field type": "textbox",
+          "css class": "pls--input",
+          "allow field exit": "true",
+          "value": {
+            "fieldName": "sfndcustno",
+            "designValue": "[sfndcustno]",
+            "noExtraSpaces": "true",
+            "dataType": "zoned",
+            "formatting": "Number",
+            "numSep": "false",
+            "zeroBalance": "false",
+            "zeroFill": "false",
+            "curSym": "",
+            "units": "",
+            "negNum": "999.00",
+            "dataLength": "6",
+            "decPos": "0"
+          },
+          "left": "310px",
+          "cursor column": "31",
+          "top": "15px",
+          "cursor row": "3",
+          "width": "80px",
+          "float placeholder": "false",
+          "layout": "custctl_screenlayout",
+          "container": "1"
+        },
+        {
+          "id": "constant2",
+          "field type": "output field",
+          "value": "Work with Customers",
+          "css class": "pls--label-right",
+          "left": "0px",
+          "cursor column": "-31",
+          "top": "40px",
+          "cursor row": "-1",
+          "css class 2": "pls--top-line",
+          "css class 3": "pls--constant",
+          "layout": "custctl_layout_hidden_fields",
+          "container": "1"
+        },
+        {
+          "id": "btnSubmit",
+          "field type": "graphic button",
+          "value": "Continue",
+          "shortcut key": "Enter",
+          "tool tip": "Enter",
+          "left": "140px",
+          "top": "40px",
+          "width": "140px",
+          "css class": "pls--button",
+          "auto arrange": "true",
+          "layout": "custctl_layout_hidden_fields",
+          "container": "1"
+        },
+        {
+          "id": "btnCA03",
+          "field type": "graphic button",
+          "bypass validation": "true",
+          "value": "Exit",
+          "shortcut key": "F3",
+          "tool tip": "F3",
+          "response": {
+            "fieldName": "*in03",
+            "dataType": "indicator",
+            "formatting": "Indicator",
+            "indFormat": "1 / 0"
+          },
+          "left": "280px",
+          "top": "40px",
+          "width": "140px",
+          "css class": "pls--button",
+          "auto arrange": "true",
+          "layout": "custctl_layout_hidden_fields",
+          "container": "1"
+        },
+        {
+          "id": "soptdesc",
+          "field type": "output field",
+          "value": {
+            "fieldName": "soptdesc",
+            "designValue": "[soptdesc]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "false",
+            "trimTrailing": "false",
+            "textTransform": "none",
+            "dataLength": "77"
+          },
+          "css class": "pls--output-field",
+          "left": "465px",
+          "cursor column": "2",
+          "top": "40px",
+          "cursor row": "6",
+          "css class 2": "BLU",
+          "css class 3": "pls--constant",
+          "layout": "custctl_layout_hidden_fields",
+          "container": "1"
+        },
+        {
+          "id": "constant4",
+          "field type": "output field",
+          "value": "Filter:",
+          "css class": "pls--label-right",
+          "left": "20px",
+          "cursor column": "2",
+          "top": "55px",
+          "cursor row": "4",
+          "css class 2": "pls--constant",
+          "width": "270px",
+          "layout": "custctl_screenlayout",
+          "container": "1"
+        },
+        {
+          "id": "sfilter",
+          "field type": "textbox",
+          "css class": "pls--input",
+          "allow field exit": "true",
+          "value": {
+            "fieldName": "sfilter",
+            "designValue": "[sfilter]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "true",
+            "trimTrailing": "true",
+            "dataLength": "48"
+          },
+          "left": "310px",
+          "cursor column": "31",
+          "top": "55px",
+          "cursor row": "4",
+          "width": "500px",
+          "float placeholder": "false",
+          "layout": "custctl_screenlayout",
+          "container": "1"
+        },
+        {
+          "id": "custctl_btnsubmit",
+          "field type": "graphic button",
+          "value": "Filter/Find",
+          "icon position": "left",
+          "icon": "material:filter_list",
+          "left": "20px",
+          "width": "140px",
+          "css class": "pls--button--primary",
+          "css class 2": "pls--ripple",
+          "shortcut key": "Enter",
+          "top": "105px",
+          "layout": "custctl_screenlayout",
+          "container": "1"
+        },
+        {
+          "id": "custctl_btnclear",
+          "field type": "graphic button",
+          "value": "Clear Form",
+          "icon position": "left",
+          "icon": "material:clear",
+          "left": "175px",
+          "width": "140px",
+          "css class": "pls--button--secondary",
+          "css class 2": "pls--ripple",
+          "onclick": "pls.field.clearForm(this);",
+          "top": "105px",
+          "layout": "custctl_screenlayout",
+          "container": "1"
+        },
+        {
+          "id": "sopt",
+          "field type": "combo box",
+          "css class": "pls--combo-box pls--gridSelector",
+          "allow field exit": "true",
+          "value": {
+            "fieldName": "sopt",
+            "designValue": "[sopt]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "true",
+            "trimTrailing": "true",
+            "textTransform": "uppercase",
+            "dataLength": "2"
+          },
+          "text transform": "uppercase",
+          "left": "5px",
+          "cursor column": "2",
+          "top": "5px",
+          "cursor row": "9",
+          "width": "50px",
+          "css class 2": {
+            "fieldName": "50",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "Custom Values",
+            "customTrue": "RI",
+            "customFalse": ""
+          },
+          "set focus": {
+            "fieldName": "50",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "true / false"
+          },
+          "float placeholder": "false",
+          "grid": "custsfl",
+          "column": "0"
+        },
+        {
+          "id": "scustno",
+          "field type": "output field",
+          "value": {
+            "fieldName": "scustno",
+            "designValue": "[scustno]",
+            "dataType": "zoned",
+            "formatting": "Number",
+            "numSep": "false",
+            "zeroBalance": "true",
+            "zeroFill": "true",
+            "curSym": "",
+            "units": "",
+            "negNum": "-999.00",
+            "dataLength": "6",
+            "decPos": "0"
+          },
+          "css class": "pls--output-field",
+          "left": "5px",
+          "cursor column": "6",
+          "top": "5px",
+          "cursor row": "9",
+          "width": "60px",
+          "text align": "right",
+          "grid": "custsfl",
+          "column": "1"
+        },
+        {
+          "id": "sname",
+          "field type": "output field",
+          "value": {
+            "fieldName": "sname",
+            "designValue": "[sname]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "false",
+            "trimTrailing": "false",
+            "textTransform": "none",
+            "dataLength": "20"
+          },
+          "css class": "pls--output-field",
+          "left": "5px",
+          "cursor column": "15",
+          "top": "5px",
+          "cursor row": "9",
+          "grid": "custsfl",
+          "column": "2"
+        },
+        {
+          "id": "semail",
+          "field type": "output field",
+          "value": {
+            "fieldName": "semail",
+            "designValue": "[semail]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "false",
+            "trimTrailing": "false",
+            "textTransform": "none",
+            "dataLength": "25"
+          },
+          "css class": "pls--output-field",
+          "left": "5px",
+          "cursor column": "37",
+          "top": "5px",
+          "cursor row": "9",
+          "grid": "custsfl",
+          "column": "3"
+        },
+        {
+          "id": "sphone",
+          "field type": "output field",
+          "value": {
+            "fieldName": "sphone",
+            "designValue": "[sphone]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "false",
+            "trimTrailing": "false",
+            "textTransform": "none",
+            "dataLength": "15"
+          },
+          "css class": "pls--output-field",
+          "left": "5px",
+          "cursor column": "64",
+          "top": "5px",
+          "cursor row": "9",
+          "grid": "custsfl",
+          "column": "4"
+        },
+        {
+          "id": "saddr",
+          "field type": "output field",
+          "value": {
+            "fieldName": "saddr",
+            "designValue": "[saddr]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "false",
+            "trimTrailing": "false",
+            "textTransform": "none",
+            "dataLength": "64"
+          },
+          "css class": "pls--output-field",
+          "left": "5px",
+          "cursor column": "15",
+          "top": "5px",
+          "cursor row": "10",
+          "width": "240px",
+          "grid": "custsfl",
+          "column": "5"
+        }
+      ],
+      "dspf record layout": {
+        "custctl": [
+          {
+            "name": "*in03",
+            "inBufPos": 1
+          },
+          {
+            "name": "*in30",
+            "outBufPos": 2
+          },
+          {
+            "name": "*in31",
+            "outBufPos": 1
+          },
+          {
+            "name": "sfndcustno",
+            "inBufPos": 2,
+            "outBufPos": 3
+          },
+          {
+            "name": "sfilter",
+            "inBufPos": 8,
+            "outBufPos": 9
+          },
+          {
+            "name": "soptdesc",
+            "outBufPos": 57
+          }
+        ],
+        "custsfl": [
+          {
+            "name": "*in50",
+            "outBufPos": 2
+          },
+          {
+            "name": "*in51",
+            "outBufPos": 1
+          },
+          {
+            "name": "sopt",
+            "inBufPos": 1,
+            "outBufPos": 3
+          },
+          {
+            "name": "scustno",
+            "outBufPos": 5
+          },
+          {
+            "name": "sname",
+            "outBufPos": 11
+          },
+          {
+            "name": "semail",
+            "outBufPos": 31
+          },
+          {
+            "name": "sphone",
+            "outBufPos": 56
+          },
+          {
+            "name": "saddr",
+            "outBufPos": 71
+          }
+        ]
+      }
+    },
+    {
+      "screen": {
+        "record format name": "custfoot",
+        "overlay range": "23-23"
+      },
+      "items": [
+        {
+          "id": "custfoot_layout_hidden_fields",
+          "field type": "layout",
+          "template": "simple container",
+          "overflow x": "auto",
+          "overflow y": "auto",
+          "left": "0px",
+          "top": "0px",
+          "height": "40px",
+          "width": "40px",
+          "z index": "0",
+          "locked in place": "true",
+          "css class": "hidden",
+          "visibility": "hidden"
+        },
+        {
+          "id": "sfkeys",
+          "field type": "output field",
+          "value": {
+            "fieldName": "sfkeys",
+            "designValue": "[sfkeys]",
+            "dataType": "char",
+            "formatting": "Text",
+            "trimLeading": "true",
+            "trimTrailing": "true",
+            "textTransform": "none",
+            "dataLength": "512"
+          },
+          "css class": "pls--output-field pls--fkeys",
+          "left": "0px",
+          "cursor column": "-2",
+          "top": "40px",
+          "cursor row": "-23",
+          "css class 2": "BLU",
+          "css class 3": "pls--constant",
+          "visibility": "hidden",
+          "layout": "custfoot_layout_hidden_fields",
+          "container": "1"
+        },
+        {
+          "id": "btnSubmit",
+          "field type": "graphic button",
+          "value": "Continue",
+          "shortcut key": "Enter",
+          "tool tip": "Enter",
+          "left": "140px",
+          "top": "40px",
+          "width": "140px",
+          "css class": "pls--button",
+          "auto arrange": "true",
+          "layout": "custfoot_layout_hidden_fields",
+          "container": "1"
+        }
+      ],
+      "dspf record layout": {
+        "custfoot": [
+          {
+            "name": "sfkeys",
+            "outBufPos": 1
+          }
+        ]
+      }
+    },
+    {
+      "screen": {
+        "record format name": "custnone",
+        "overlay": "true",
+        "overlay range": "10-10",
+        "design overlay formats": "custctl"
+      },
+      "items": [
+        {
+          "id": "custnone_layout_hidden_fields",
+          "field type": "layout",
+          "template": "simple container",
+          "overflow x": "auto",
+          "overflow y": "auto",
+          "left": "0px",
+          "top": "0px",
+          "height": "40px",
+          "width": "40px",
+          "z index": "0",
+          "locked in place": "true",
+          "css class": "hidden",
+          "visibility": "hidden"
+        },
+        {
+          "id": "constant10",
+          "field type": "output field",
+          "value": "** No customers to display **",
+          "css class": "pls--label-right",
+          "left": "355px",
+          "cursor column": "26",
+          "top": "160px",
+          "cursor row": "10",
+          "css class 2": "pls--constant"
+        },
+        {
+          "id": "btnSubmit",
+          "field type": "graphic button",
+          "value": "Continue",
+          "shortcut key": "Enter",
+          "tool tip": "Enter",
+          "left": "0px",
+          "top": "40px",
+          "width": "140px",
+          "css class": "pls--button",
+          "auto arrange": "true",
+          "layout": "custnone_layout_hidden_fields",
+          "container": "1"
+        }
+      ],
+      "dspf record layout": {
+        "custnone": []
+      }
+    },
+    {
+      "screen": {
+        "record format name": "custmsgctl",
+        "overlay": "true",
+        "overlay range": "24-24"
+      },
+      "items": [
+        {
+          "id": "custmsgctl_layout_hidden_fields",
+          "field type": "layout",
+          "template": "simple container",
+          "overflow x": "auto",
+          "overflow y": "auto",
+          "left": "0px",
+          "top": "0px",
+          "height": "40px",
+          "width": "40px",
+          "z index": "0",
+          "locked in place": "true",
+          "css class": "hidden",
+          "visibility": "hidden"
+        },
+        {
+          "id": "btnSubmit",
+          "field type": "graphic button",
+          "value": "Continue",
+          "shortcut key": "Enter",
+          "tool tip": "Enter",
+          "left": "140px",
+          "top": "40px",
+          "width": "140px",
+          "css class": "pls--button",
+          "auto arrange": "true",
+          "layout": "custmsgctl_layout_hidden_fields",
+          "container": "1"
+        },
+        {
+          "id": "custmsgsfl",
+          "field type": "grid",
+          "number of columns": "1",
+          "record format name": "custmsgsfl",
+          "display subfile": {
+            "fieldName": "N41 and 40",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "true / false"
+          },
+          "clear subfile": {
+            "fieldName": "41",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "true / false"
+          },
+          "subfile size": "2",
+          "header height": "35",
+          "row height": "33",
+          "row selection": "none",
+          "border color": "var(--color--grid-border)",
+          "border width": "1px",
+          "css class": "pls--grid",
+          "subfile end": {
+            "fieldName": "N41 and 40",
+            "dataType": "expression",
+            "formatting": "Indicator",
+            "indFormat": "true / false"
+          },
+          "number of rows": "1",
+          "has header": "false",
+          "subfile program message queue": {
+            "fieldName": "spgmq",
+            "dataLength": "10",
+            "trimLeading": "false",
+            "trimTrailing": "true",
+            "dataType": "char",
+            "formatting": "Text",
+            "textTransform": "none"
+          },
+          "subfile message key": {
+            "fieldName": "smsgkey",
+            "dataLength": "4",
+            "trimLeading": "false",
+            "trimTrailing": "true",
+            "dataType": "char",
+            "formatting": "Text",
+            "textTransform": "none"
+          },
+          "top": "130px",
+          "left": "0px",
+          "column widths": "840",
+          "scrollbar": "none",
+          "scroll tool tip": "row number",
+          "show paging controls": "false",
+          "css class 2": "pls--grid-messages",
+          "tool tip": "js: pls.tooltip.get(obj);",
+          "column headings": " ",
+          "height": "33px",
+          "width": "841px",
+          "layout": "custmsgctl_layout_hidden_fields",
+          "container": "1"
+        }
+      ],
+      "dspf record layout": {
+        "custmsgctl": [
+          {
+            "name": "*in40",
+            "outBufPos": 2
+          },
+          {
+            "name": "*in41",
+            "outBufPos": 1
+          }
+        ],
+        "custmsgsfl": [
+          {
+            "name": "smsgkey",
+            "inBufPos": 1,
+            "outBufPos": 1
+          },
+          {
+            "name": "spgmq",
+            "inBufPos": 5,
+            "outBufPos": 5
+          }
+        ]
+      }
+    }
+  ],
+  "keywords": [],
+  "long name aliases": true
+}

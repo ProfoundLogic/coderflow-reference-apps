@@ -1,0 +1,94 @@
+<div class="custlist-screen">
+  <div class="header">
+    <h1>Work with Customers</h1>
+  </div>
+
+  <div class="toolbar">
+    <div class="search-group">
+      <label for="sfndcustno">Find Customer #:</label>
+      <input type="text" name="sfndcustno" id="sfndcustno"
+             value="<%= sfndcustno %>" class="input-narrow">
+    </div>
+    <div class="search-group">
+      <label for="sfilter">Filter:</label>
+      <input type="text" name="sfilter" id="sfilter"
+             value="<%= sfilter %>" class="input-wide"
+             placeholder="Search by name, email, phone...">
+    </div>
+    <button onclick="pui.submit({action: 'SEARCH'})" class="btn">Search</button>
+  </div>
+
+  <% if (typeof msg !== 'undefined' && msg && msg.trim()) { %>
+    <div class="message"><%= msg %></div>
+  <% } %>
+
+  <% if (typeof soptdesc !== 'undefined' && soptdesc && soptdesc.trim()) { %>
+    <div class="options-hint"><%= soptdesc %></div>
+  <% } %>
+
+  <table class="customer-table" data-sortable-table>
+    <thead>
+      <tr>
+        <th class="col-opt">Opt</th>
+        <th class="col-custno">
+          <button type="button" class="sort-button" data-sort-key="custno" data-sort-type="number">
+            Number
+            <span class="sort-indicator" aria-hidden="true"></span>
+          </button>
+        </th>
+        <th class="col-name">
+          <button type="button" class="sort-button" data-sort-key="name" data-sort-type="text">
+            Name
+            <span class="sort-indicator" aria-hidden="true"></span>
+          </button>
+        </th>
+        <th class="col-email">
+          <button type="button" class="sort-button" data-sort-key="email" data-sort-type="text">
+            Email
+            <span class="sort-indicator" aria-hidden="true"></span>
+          </button>
+        </th>
+        <th class="col-phone">
+          <button type="button" class="sort-button" data-sort-key="phone" data-sort-type="text">
+            Phone
+            <span class="sort-indicator" aria-hidden="true"></span>
+          </button>
+        </th>
+        <th class="col-addr">
+          <button type="button" class="sort-button" data-sort-key="addr" data-sort-type="text">
+            Address
+            <span class="sort-indicator" aria-hidden="true"></span>
+          </button>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (typeof custsfl !== 'undefined' && custsfl && custsfl.length > 0) { %>
+        <% custsfl.forEach(function(row) { %>
+          <tr data-sort-custno="<%= row.scustno %>"
+              data-sort-name="<%= row.sname %>"
+              data-sort-email="<%= row.semail %>"
+              data-sort-phone="<%= row.sphone %>"
+              data-sort-addr="<%= row.saddr %>">
+            <td class="col-opt">
+              <input name="custsfl.sopt.<%= row._rrn %>"
+                     value="<%= row.sopt %>" size="2" maxlength="2"
+                     class="input-opt">
+            </td>
+            <td class="col-custno"><%= row.scustno %></td>
+            <td class="col-name"><%= row.sname %></td>
+            <td class="col-email"><%= row.semail %></td>
+            <td class="col-phone"><%= row.sphone %></td>
+            <td class="col-addr"><%= row.saddr %></td>
+          </tr>
+        <% }); %>
+      <% } %>
+    </tbody>
+  </table>
+
+  <input type="hidden" name="action" value="">
+
+  <div class="footer">
+    <button onclick="pui.submit({action: 'EXIT'})" data-fkey="F3" class="btn btn-secondary">Exit (F3)</button>
+  </div>
+</div>

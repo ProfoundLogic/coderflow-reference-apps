@@ -1,0 +1,127 @@
+     A*%%TS  SD  20230716  100244  ALEXR       REL-V7R3M0  5770-WDS
+     A*            08:21:11    QPGMR       REL-R08M00  5714-UT1
+     A*%%EC
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      INDARA
+     A                                      PRINT
+     A****************************************************************
+     A*SUBFILE RECORD FORMAT
+     A*            10:42:33    QPGMR       REL-R08M00  5714-UT1
+     A*            10:42:33    QPGMR       REL-R08M00  5714-UT1
+     A*            10:42:33    QPGMR       REL-R08M00  5714-UT1
+     A*            10:42:33    QPGMR       REL-R08M00  5714-UT1
+     A          R PRODSFL                   SFL
+     A*%%TS  SD  20120220  004917  ALEXR       REL-V6R1M0  5761-WDS
+     A                                      TEXT('Products Subfile')
+     A            OPT            1A  B 12  9VALUES(' ' '1')
+     A            PRID           5Y 0O 12 14EDTCDE(Z)
+     A            PRNAME        30A  O 12 21
+     A            PRPRICE        7Y 2O 12 53EDTCDE(3)
+     A            PRQTY          5Y 0O 12 65EDTCDE(Z)
+     A****************************************************************
+     A*CONTROL RECORD FORMAT
+     A*            08:21:11    QPGMR       REL-R08M00  5714-UT1
+     A          R PRODCTL                   SFLCTL(PRODSFL)
+     A*%%TS  SD  20120220  004917  ALEXR       REL-V6R1M0  5761-WDS
+     A                                      TEXT('View Products')
+     A                                      CA03(03 'Exit')
+     A                                      CA05(05 'Refresh')
+     A                                      OVERLAY
+     A N70                                  SFLDSP
+     A N70                                  SFLDSPCTL
+     A  70                                  SFLCLR
+     A N70                                  SFLEND(*MORE)
+     A                                      SFLSIZ(0100)
+     A                                      SFLPAG(0009)
+     A                                  1 36'View Products'
+     A                                      DSPATR(HI)
+     A                                 11 12'Product'
+     A                                      DSPATR(HI)
+     A                                 11 21'Product Name'
+     A                                      DSPATR(HI)
+     A                                 10  8'1=Select to view details'
+     A                                      COLOR(BLU)
+     A                                 11  8'Opt'
+     A                                      DSPATR(HI)
+     A            S1PRID         5Y 0B  6 39EDTCDE(Z)
+     A                                  8 13'Position by Product Name:'
+     A                                      DSPATR(HI)
+     A            S1PRNAME      30A  B  8 39COMP(NE 'JUNK')
+     A                                      CHECK(LC)
+     A                                 11 56'Price'
+     A                                      DSPATR(HI)
+     A                                 11 67'Qty'
+     A                                      DSPATR(HI)
+     A                                  6 13'Position by Product Id:'
+     A                                      DSPATR(HI)
+     A                                  4 13'Filter by Category:'
+     A                                      DSPATR(HI)
+     A            S1CATID        5Y 0B  4 39EDTCDE(Z)
+     A            CATNAME       30A  O  4 46
+     A          R PRODDETL
+     A*%%TS  SD  20120220  004917  ALEXR       REL-V6R1M0  5761-WDS
+     A                                      TEXT('Product Details')
+     A                                      CA03(03 'Exit')
+     A                                      CA12(12 'Back')
+     A                                      CF06(06 'Show Features')
+     A                                  1 34'Product Details'
+     A                                      DSPATR(HI)
+     A                                  4  5'Product Id:'
+     A                                      DSPATR(HI)
+     A                                  6  5'Product Name:'
+     A                                      DSPATR(HI)
+     A                                  8  5'Description:'
+     A                                      DSPATR(HI)
+     A                                 10  5'Price:'
+     A                                      DSPATR(HI)
+     A                                 12  5'Quantity:'
+     A                                      DSPATR(HI)
+     A                                 14  5'Category:'
+     A                                      DSPATR(HI)
+     A            PRID           5Y 0O  4 20EDTCDE(Z)
+     A            PRNAME        30A  O  6 20
+     A            PRDESC        60A  O  8 20
+     A            PRPRICE        7Y 2O 10 16EDTCDE(J)
+     A            PRQTY          5Y 0O 12 20EDTCDE(Z)
+     A            PRCATID        5Y 0O 14 20EDTCDE(Z)
+     A            CATNAME       30A  O 14 27
+     A                                 22  3'F3=Exit'
+     A                                      COLOR(BLU)
+     A                                 22 34'F12=Cancel'
+     A                                      COLOR(BLU)
+     A                                 22 14'F6=Show Features'
+     A                                      COLOR(BLU)
+     A          R FEATSFL                   SFL
+     A*%%TS  SD  20120220  004917  ALEXR       REL-V6R1M0  5761-WDS
+     A                                      TEXT('Features Subfile')
+     A            FENAME        30A  O  2 10DSPATR(PC)
+     A            FEID           5Y 0O  2  3EDTCDE(Z)
+     A          R FEATWIN                   SFLCTL(FEATSFL)
+     A*%%TS  SD  20230716  100244  ALEXR       REL-V7R3M0  5770-WDS
+     A                                      SFLSIZ(0050)
+     A                                      SFLPAG(0009)
+     A                                      WINDOW(7 19 12 43)
+     A                                      TEXT('Features Window')
+     A                                      CA12(12 'Close')
+     A N60                                  SFLDSP
+     A N60                                  SFLDSPCTL
+     A  60                                  SFLCLR
+     A N60                                  SFLEND(*MORE)
+     A                                      WDWTITLE((*TEXT ' Product Features -
+     A                                      ') *CENTER)
+     A                                  1 10'Feature'
+     A                                      DSPATR(HI)
+     A                                  1  6'Id'
+     A                                      DSPATR(HI)
+     A                                  1 30'F12=Cancel'
+     A                                      COLOR(BLU)
+     A          R PRODBOTTOM
+     A*%%TS  SD  20120220  004917  ALEXR       REL-V6R1M0  5761-WDS
+     A                                      TEXT('Function Keys')
+     A                                      CA03(03 'Exit')
+     A                                      CA05(05 'Refresh')
+     A                                      OVERLAY
+     A                                 23  3'F3=Exit'
+     A                                      COLOR(BLU)
+     A                                 23 14'F5=Refresh'
+     A                                      COLOR(BLU)

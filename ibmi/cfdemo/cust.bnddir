@@ -1,0 +1,2 @@
+crtbnddir bnddir($LIBRARY/$NAME)
+addbnddire bnddir($LIBRARY/$NAME) obj((custr *srvpgm *immed))

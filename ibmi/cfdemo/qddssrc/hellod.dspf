@@ -1,0 +1,10 @@
+     A                                      DSPSIZ(24 80 *DS3)   
+     A          R SCREEN                                         
+     A                                      CA03(03 'Exit')      
+     A                                  1  2'Hello World Example'
+     A                                      COLOR(WHT)           
+     A                                 23  1'F3=Exit'            
+     A                                      COLOR(BLU)           
+     A                                  3  2'Enter your name:'   
+     A            NAME          50A  I  3 19CHECK(LC)            
+     A            MESSAGE       70A  O  5  2                     

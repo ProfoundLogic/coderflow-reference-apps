@@ -6,7 +6,7 @@ This project uses the `codermake` command to build sources from the local enviro
 
 ## Building
 
-**Important:** Run `codermake` from within the `ibmi` directory (this directory).
+**Important:** Run `codermake` from within this directory.
 
 ## Executing IBM i Applications
 
